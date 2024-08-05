@@ -7,17 +7,19 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
+@Entity
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long appointmentId;
+    private Long Id;
+    @OneToOne
     private User client;
+    @ManyToOne
     private User skilledWorker;
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
