@@ -1,6 +1,6 @@
 package com.skilledservice.ClientService.services;
 
-import com.skilledservice.ClientService.dto.request.SkilledWorkerRegistrationRequest;
+import com.skilledservice.ClientService.dto.request.RegistrationRequest;
 import com.skilledservice.ClientService.dto.response.SkilledWorkerRegistrationResponse;
 import com.skilledservice.ClientService.models.Address;
 import com.skilledservice.ClientService.repository.AddressRepository;
@@ -21,7 +21,7 @@ public class SkilledWorkerServiceTest {
 
     @Test
     public void SkilledWorkerRegistrationTest() {
-        SkilledWorkerRegistrationRequest registrationRequest = new SkilledWorkerRegistrationRequest();
+        RegistrationRequest registrationRequest = new RegistrationRequest();
         Address address = new Address();
         address.setHouseNumber("312");
         address.setStreet("Herbert Macaulay Way");

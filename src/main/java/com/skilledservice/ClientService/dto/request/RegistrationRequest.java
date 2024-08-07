@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SkilledWorkerRegistrationRequest {
+public class RegistrationRequest {
     private String firstName;
     private String lastName;
     private String username;

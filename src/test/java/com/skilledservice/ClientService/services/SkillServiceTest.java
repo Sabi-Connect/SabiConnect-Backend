@@ -1,7 +1,7 @@
 package com.skilledservice.ClientService.services;
 
 import com.skilledservice.ClientService.dto.request.AddSkillRequest;
-import com.skilledservice.ClientService.dto.request.SkilledWorkerRegistrationRequest;
+import com.skilledservice.ClientService.dto.request.RegistrationRequest;
 import com.skilledservice.ClientService.dto.response.AddSkillResponse;
 import com.skilledservice.ClientService.dto.response.SkilledWorkerRegistrationResponse;
 import com.skilledservice.ClientService.exceptions.ProjectException;
@@ -14,7 +14,6 @@ import com.skilledservice.ClientService.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -37,7 +36,7 @@ public class SkillServiceTest {
         address.setStreet("Herbert Macaulay Way");
         address.setArea("Yaba");
 
-        SkilledWorkerRegistrationRequest registrationRequest = new SkilledWorkerRegistrationRequest();
+        RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Fitzgerald");
         registrationRequest.setLastName("McDonald");
         registrationRequest.setEmail("fitzgerald@gmail.com");
@@ -67,7 +66,7 @@ public class SkillServiceTest {
         address.setStreet("Herbert Macaulay Way");
         address.setArea("Yaba");
 
-        SkilledWorkerRegistrationRequest registrationRequest = new SkilledWorkerRegistrationRequest();
+        RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Fitzgerald");
         registrationRequest.setLastName("McDonald");
         registrationRequest.setEmail("fitzgerald@gmail.com");

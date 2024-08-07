@@ -1,7 +1,7 @@
 package com.skilledservice.ClientService.services;
 
 import com.skilledservice.ClientService.dto.request.AddSkillRequest;
-import com.skilledservice.ClientService.dto.request.SkilledWorkerRegistrationRequest;
+import com.skilledservice.ClientService.dto.request.RegistrationRequest;
 import com.skilledservice.ClientService.dto.response.AddSkillResponse;
 import com.skilledservice.ClientService.dto.response.SkilledWorkerRegistrationResponse;
 import com.skilledservice.ClientService.exceptions.ProjectException;
@@ -30,7 +30,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     }
 
     @Override
-    public SkilledWorkerRegistrationResponse registerSkilledWorker(SkilledWorkerRegistrationRequest registrationRequest) {
+    public SkilledWorkerRegistrationResponse registerSkilledWorker(RegistrationRequest registrationRequest) {
         User skilledWorker = mapper.map(registrationRequest, User.class);
         skilledWorker=userRepository.save(skilledWorker);
 
