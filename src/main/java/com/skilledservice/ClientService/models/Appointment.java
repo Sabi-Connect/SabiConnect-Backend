@@ -17,10 +17,6 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @OneToOne
-    private User client;
-    @ManyToOne
-    private User skilledWorker;
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
     private BigDecimal amount;
@@ -30,4 +26,8 @@ public class Appointment {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime endTime;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @ManyToOne
+    private User user;
 }
