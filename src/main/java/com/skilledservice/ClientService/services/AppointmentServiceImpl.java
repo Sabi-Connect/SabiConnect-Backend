@@ -2,9 +2,7 @@ package com.skilledservice.ClientService.services;
 
 import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
-import com.skilledservice.ClientService.dto.response.BookAppointmentResponse;
-import com.skilledservice.ClientService.dto.response.CancelAppointmentResponse;
-import com.skilledservice.ClientService.dto.response.UpdateAppointmentResponse;
+import com.skilledservice.ClientService.dto.response.*;
 import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
 import com.skilledservice.ClientService.models.Appointment;
 import com.skilledservice.ClientService.models.AppointmentStatus;
@@ -13,6 +11,8 @@ import com.skilledservice.ClientService.repository.AppointmentRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -65,4 +65,23 @@ public class AppointmentServiceImpl implements AppointmentService {
         response.setMessage("Appointment Updated");
         return response;
     }
+
+    @Override
+    public DeleteAppointmentResponse deleteAppointment(Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(()-> new AppointmentNotFoundException("No appointment found"));
+        appointmentRepository.delete(appointment);
+        return new DeleteAppointmentResponse("Appointment deleted successfully");
+    }
+
+    @Override
+    public List<ViewAllAppointmentsResponse> viewAllAppointment() {
+        var  appointments = appointmentRepository.findAll();
+        var response = List.of(modelMapper
+                .map(appointments, ViewAllAppointmentsResponse[].class));
+
+        return response;
+    }
+
+
 }
