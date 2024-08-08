@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-public class    Appointment {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -28,6 +28,5 @@ public class    Appointment {
     private LocalDateTime endTime;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @ManyToOne
-    private User user;
+    private Long userId;
 }
