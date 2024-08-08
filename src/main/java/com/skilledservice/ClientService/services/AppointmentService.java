@@ -1,2 +1,4 @@
-package com.skilledservice.ClientService.services;public interface AppointmentService {
+package com.skilledservice.ClientService.services;
+
+public interface AppointmentService {
 }
