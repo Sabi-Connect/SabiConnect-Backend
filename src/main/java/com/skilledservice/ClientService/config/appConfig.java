@@ -1,2 +1,3 @@
-package com.skilledservice.ClientService.config;public class appConfig {
+package com.skilledservice.ClientService.config;
+public class appConfig {
 }
