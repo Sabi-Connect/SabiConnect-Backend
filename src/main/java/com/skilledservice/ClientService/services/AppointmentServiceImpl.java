@@ -6,12 +6,12 @@ import com.skilledservice.ClientService.dto.response.*;
 import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
 import com.skilledservice.ClientService.models.Appointment;
 import com.skilledservice.ClientService.models.AppointmentStatus;
-import com.skilledservice.ClientService.models.Role;
 import com.skilledservice.ClientService.repository.AppointmentRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,18 +21,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     private  final ModelMapper modelMapper;
 
     @Override
-    public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
+    public Appointment bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
         Appointment appointment = modelMapper.map(bookAppointmentRequest, Appointment.class);
-        appointment.setRole(Role.CLIENT);
         appointment.setStatus(AppointmentStatus.WAITING);
         appointmentRepository.save(appointment);
 
-        BookAppointmentResponse response = new BookAppointmentResponse();
-        response.setAppointmentId(appointment.getId());
-        response.setStartTime(appointment.getStartTime());
-        response.setAmount(appointment.getAmount());
-        response.setMessage("Appointment booked successfully");
-        return response;
+        return appointment;
+
+//        BookAppointmentResponse response = new BookAppointmentResponse();
+//        response.setAppointmentId(appointment.getId());
+//        response.setStartTime(appointment.getStartTime());
+//        response.setAmount(appointment.getAmount());
+//        response.setMessage("Appointment booked successfully");
+//        return response;
 
     }
 
@@ -81,6 +82,12 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointments, ViewAllAppointmentsResponse[].class));
 
         return response;
+    }
+
+    @Override
+    public void save(Appointment appointment) {
+        appointmentRepository.save(appointment);
+
     }
 
 

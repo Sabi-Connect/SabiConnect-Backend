@@ -2,9 +2,9 @@ package com.skilledservice.ClientService.models;
 public enum Category {
     ELECTRICAL,
     PLUMBING,
-    HAIRDRESSING,
+    SALONS,
     CARPENTRY,
-    FASHIONDESIGNER,
+    FASHION,
     PHOTOGRAPHY,
-    BARBER
+
 }
