@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ClientRegistrationResponse {
-    private Long clientId;
+public class CancelAppointmentResponse {
     private String message;
+    private Long appointmentId;
 }

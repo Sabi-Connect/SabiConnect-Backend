@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-public class Appointment {
+public class    Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
