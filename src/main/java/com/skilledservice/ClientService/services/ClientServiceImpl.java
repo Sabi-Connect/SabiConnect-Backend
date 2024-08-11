@@ -7,7 +7,6 @@ import com.skilledservice.ClientService.dto.response.*;
 import com.skilledservice.ClientService.models.Address;
 import com.skilledservice.ClientService.models.Appointment;
 import com.skilledservice.ClientService.models.User;
-import com.skilledservice.ClientService.repository.AddressRepository;
 import com.skilledservice.ClientService.repository.AppointmentRepository;
 import com.skilledservice.ClientService.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -25,17 +24,14 @@ public class ClientServiceImpl implements ClientService{
     private final PasswordEncoder passwordEncoder;
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
-    private final AppointmentService appointmentService;
+    private  final AppointmentService appointmentService;
 
     @Override
     public ClientRegistrationResponse registerClient(RegistrationRequest request) {
         User user = modelMapper.map(request, User.class);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        Address address = new Address();
-        address= addressRepository.save(address);
-        user.setAddress(address);
         user = userRepository.save(user);
+
         var response = modelMapper.map(user, ClientRegistrationResponse.class);
         response.setMessage(" registered successfully");
         return response;
@@ -44,7 +40,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public Long getNumberOfUsers() {
-        return userRepository.count();
+        return null;
     }
 
     @Override
@@ -52,10 +48,18 @@ public class ClientServiceImpl implements ClientService{
       User user = userRepository.findById(bookAppointmentRequest.getId())
               .orElseThrow(() ->new UsernameNotFoundException("User not found"));
       Appointment appointment =
-              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
-      appointment.setUserId(bookAppointmentRequest.getUserId());
+              appointmentService.bookAppointment(bookAppointmentRequest);
+      appointment.setUser(user);
+
+      User skilledWorker = userRepository.findById(bookAppointmentRequest.getId())
+              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
+            skilledWorker.getAppointments().add(appointment);
       appointmentService.save(appointment);
-      return modelMapper.map(appointment, BookAppointmentResponse.class);
+      BookAppointmentResponse response=
+              modelMapper.map(appointment, BookAppointmentResponse.class);
+      response.setMessage("Appointment booked successfully");
+      return response;
+
     }
 
     @Override

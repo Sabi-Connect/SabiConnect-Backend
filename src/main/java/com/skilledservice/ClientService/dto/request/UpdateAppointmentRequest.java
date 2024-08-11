@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -16,8 +17,12 @@ import java.time.LocalDateTime;
 public class UpdateAppointmentRequest {
     private Long appointmentId;
     private Long clientId;
-    private BigDecimal amount;
-    private LocalDateTime startTime;
+    private Long userId;
+    private String UserEmail;
+    private String userPhoneNumber;
     private AppointmentStatus status;
+    private LocalDate startTime;
+    private BigDecimal amount;
+
 
 }

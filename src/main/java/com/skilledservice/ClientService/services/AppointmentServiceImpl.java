@@ -1,12 +1,12 @@
 package com.skilledservice.ClientService.services;
 
+import com.skilledservice.ClientService.dto.request.AddAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.dto.response.*;
 import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
 import com.skilledservice.ClientService.models.Appointment;
 import com.skilledservice.ClientService.models.AppointmentStatus;
-import com.skilledservice.ClientService.models.Role;
 import com.skilledservice.ClientService.repository.AppointmentRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,7 +22,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private  final ModelMapper modelMapper;
 
     @Override
-    public Appointment bookAppointment(BigDecimal bookAppointmentRequest) {
+    public Appointment bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
         Appointment appointment = modelMapper.map(bookAppointmentRequest, Appointment.class);
         appointment.setStatus(AppointmentStatus.WAITING);
         appointmentRepository.save(appointment);
@@ -83,6 +83,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointments, ViewAllAppointmentsResponse[].class));
 
         return response;
+    }
+
+    @Override
+    public Appointment addAppointment(AddAppointmentRequest request) {
+        return null;
     }
 
     @Override
