@@ -4,9 +4,8 @@ import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.RegistrationRequest;
 import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.dto.response.*;
-import com.skilledservice.ClientService.exceptions.UserNotFoundException;
+import com.skilledservice.ClientService.models.Address;
 import com.skilledservice.ClientService.models.Appointment;
-import com.skilledservice.ClientService.models.AppointmentStatus;
 import com.skilledservice.ClientService.models.User;
 import com.skilledservice.ClientService.repository.AppointmentRepository;
 import com.skilledservice.ClientService.repository.UserRepository;
@@ -41,20 +40,16 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
-      User user = userRepository.findById(bookAppointmentRequest.getUserId())
-              .orElseThrow(() ->new UserNotFoundException("User not found"));
-      
-      Appointment bookedAppointment =
-              appointmentService.bookAppointment(bookAppointmentRequest);
-
-      User skilledWorker = userRepository.findById(user.getId())
-              .orElseThrow(()-> new UserNotFoundException("User not found"));
-      skilledWorker.getAppointments().add(bookedAppointment);
-      appointmentService.save(bookedAppointment);
-      return modelMapper.map(bookedAppointment, BookAppointmentResponse.class);
+      User user = userRepository.findById(bookAppointmentRequest.getId())
+              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
+      Appointment appointment =
+              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
+      appointment.setUserId(bookAppointmentRequest.getUserId());
+      appointmentService.save(appointment);
+      return modelMapper.map(appointment, BookAppointmentResponse.class);
     }
 
-    
+    @Override
     public CancelAppointmentResponse cancelAppointment(Long id) {
         return appointmentService.cancelAppointment(id);
     }

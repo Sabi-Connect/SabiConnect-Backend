@@ -25,16 +25,13 @@ public class SkillServiceTest {
     @Autowired
     private SkillRepository skillRepository;
     @Autowired
-    private SkillServiceImpl skillServiceImpl;
+    private SkillService skillService;
     @Autowired
     private AddressRepository addressRepository;
 
     @Test
     public void addSkillTest() {
-        Address address = new Address();
-        address.setHouseNumber("312");
-        address.setStreet("Herbert Macaulay Way");
-        address.setArea("Yaba");
+//        SkilledWorkerRegistrationResponse response = getSkilledWorkerRegistrationResponse();
 
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Fitzgerald");
@@ -42,29 +39,52 @@ public class SkillServiceTest {
         registrationRequest.setEmail("fitzgerald@gmail.com");
         registrationRequest.setPassword("password");
         registrationRequest.setPhoneNumber("1234567890");
+        Address address = new Address();
+        address.setHouseNumber("312");
+        address.setStreet("Herbert Macaulay Way");
+        address.setArea("Yaba");
         address = addressRepository.save(address);
         registrationRequest.setAddress(address);
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
-        assertThat(response).isNotNull();
+        assertThat(response.getSkilledWorkerId()).isNotNull();
 
         AddSkillRequest addSkillRequest = new AddSkillRequest();
         addSkillRequest.setSkilledWorkerId(response.getSkilledWorkerId());
         addSkillRequest.setCategory(Category.ELECTRICAL);
         addSkillRequest.setSkillName("Electronics Electrician");
-        AddSkillResponse skillResponse = skillServiceImpl.addSkill(addSkillRequest);
-        Skill skill = skillRepository.findById(skillResponse.getSkilledWorkerId())
-                .orElseThrow(()-> new ProjectException("user does not exist"));
+        AddSkillResponse skillResponse = skillService.addSkill(addSkillRequest);
+        System.out.println("ID --> " +skillResponse.getSkilledWorkerId());
+        assertThat(skillService.findSkillFor(response.getSkilledWorkerId())).hasSize(1);
+        Skill skill = skillRepository.findSkillById(skillResponse.getSkillId());
+//                .orElseThrow(()-> new ProjectException("user does not exist"));
         assertThat(skill.getSkillName()).isEqualTo("Electronics Electrician");
         assertThat(skill.getSkilledWorker().getId()).isEqualTo(response.getSkilledWorkerId());
     }
 
+//    private SkilledWorkerRegistrationResponse getSkilledWorkerRegistrationResponse() {
+//        Address address = new Address();
+//        address.setHouseNumber("312");
+//        address.setStreet("Herbert Macaulay Way");
+//        address.setArea("Yaba");
+//
+//        RegistrationRequest registrationRequest = new RegistrationRequest();
+//        registrationRequest.setFirstName("Fitzgerald");
+//        registrationRequest.setLastName("McDonald");
+//        registrationRequest.setEmail("fitzgerald@gmail.com");
+//        registrationRequest.setPassword("password");
+//        registrationRequest.setPhoneNumber("1234567890");
+//        address = addressRepository.save(address);
+//        registrationRequest.setAddress(address);
+//        SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
+//        assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
+//        assertThat(response).isNotNull();
+//        return response;
+//    }
+
     @Test
     public void addMoreThatOneSkillTest() {
-        Address address = new Address();
-        address.setHouseNumber("312");
-        address.setStreet("Herbert Macaulay Way");
-        address.setArea("Yaba");
+//        SkilledWorkerRegistrationResponse response = getSkilledWorkerRegistrationResponse();
 
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Fitzgerald");
@@ -72,23 +92,28 @@ public class SkillServiceTest {
         registrationRequest.setEmail("fitzgerald@gmail.com");
         registrationRequest.setPassword("password");
         registrationRequest.setPhoneNumber("1234567890");
+        Address address = new Address();
+        address.setHouseNumber("312");
+        address.setStreet("Herbert Macaulay Way");
+        address.setArea("Yaba");
         address = addressRepository.save(address);
         registrationRequest.setAddress(address);
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
         assertThat(response).isNotNull();
 
+
         AddSkillRequest addSkillRequest = new AddSkillRequest();
         addSkillRequest.setSkilledWorkerId(response.getSkilledWorkerId());
         addSkillRequest.setCategory(Category.ELECTRICAL);
         addSkillRequest.setSkillName("Electronics Electrician");
-        AddSkillResponse skillResponse = skillServiceImpl.addSkill(addSkillRequest);
+        AddSkillResponse skillResponse = skillService.addSkill(addSkillRequest);
 
         AddSkillRequest addSkillRequest1 = new AddSkillRequest();
         addSkillRequest1.setSkilledWorkerId(response.getSkilledWorkerId());
         addSkillRequest1.setCategory(Category.CARPENTRY);
         addSkillRequest1.setSkillName("Carpenter");
-        AddSkillResponse skillResponse1 = skillServiceImpl.addSkill(addSkillRequest1);
+        AddSkillResponse skillResponse1 = skillService.addSkill(addSkillRequest1);
 
         var skills = skillRepository.findSkillBySkillWorkerId(skillResponse.getSkilledWorkerId());
         assertThat(skills.size()).isEqualTo(2L);
@@ -100,7 +125,7 @@ public class SkillServiceTest {
 
     @Test
     public void editSkillTest() {
-        
+
     }
 
 }

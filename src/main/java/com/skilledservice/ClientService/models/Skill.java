@@ -15,9 +15,9 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String skillName;
-    private String skillDescription;
     @ManyToOne
     private User skilledWorker;
-    private String experience;
     private BigDecimal rate;
+    @Enumerated(EnumType.STRING)
+    private Category skillCategory;
 }

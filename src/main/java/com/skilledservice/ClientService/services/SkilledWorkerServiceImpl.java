@@ -5,10 +5,13 @@ import com.skilledservice.ClientService.dto.request.RegistrationRequest;
 import com.skilledservice.ClientService.dto.response.AddSkillResponse;
 import com.skilledservice.ClientService.dto.response.SkilledWorkerRegistrationResponse;
 import com.skilledservice.ClientService.exceptions.ProjectException;
-import com.skilledservice.ClientService.models.Skill;
+import com.skilledservice.ClientService.models.Role;
 import com.skilledservice.ClientService.models.User;
 import com.skilledservice.ClientService.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +19,21 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     private final ModelMapper mapper;
     private final UserRepository userRepository;
-    private final SkillServiceImpl skillServiceImpl;
+    private final SkillService skillService;
+    private final PasswordEncoder passwordEncoder;
 
-    public SkilledWorkerServiceImpl(ModelMapper mapper, UserRepository userRepository, SkillServiceImpl skillServiceImpl) {
+    @Autowired
+    @Lazy
+    public SkilledWorkerServiceImpl(ModelMapper mapper, UserRepository userRepository, SkillService skillService, PasswordEncoder passwordEncoder) {
         this.mapper = mapper;
         this.userRepository = userRepository;
-        this.skillServiceImpl = skillServiceImpl;
+        this.skillService = skillService;
+        this.passwordEncoder = passwordEncoder;
     }
+//    @Autowired
+//    public void SkillService(SkillService skillService) {
+//        this.skillService = skillService;
+//    }
 
     @Override
     public Long getNumberOfUsers() {
@@ -32,6 +43,8 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     @Override
     public SkilledWorkerRegistrationResponse registerSkilledWorker(RegistrationRequest registrationRequest) {
         User skilledWorker = mapper.map(registrationRequest, User.class);
+        skilledWorker.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        skilledWorker.setRole(Role.SKILLEDWORKER);
         skilledWorker=userRepository.save(skilledWorker);
 
         SkilledWorkerRegistrationResponse registrationResponse = new SkilledWorkerRegistrationResponse();
@@ -46,14 +59,13 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     @Override
     public AddSkillResponse addSkill(AddSkillRequest addSkillRequest) {
-        User skilledWorker = userRepository.findById(addSkillRequest.getSkilledWorkerId())
-                .orElseThrow(() -> new ProjectException("user not found"));
-
-        AddSkillResponse addSkillResponse = new AddSkillResponse();
-        Skill skill = skillServiceImpl.findSkillById(addSkillRequest.getSkillId());
-        skill.setSkilledWorker(skilledWorker);
-        skill = skillServiceImpl.addASkill(skill);
-        return addSkillResponse;
+        return skillService.addSkill(addSkillRequest);
     }
+
+    @Override
+    public User findById(Long skilledWorkerId) {
+        return userRepository.findById(skilledWorkerId).orElseThrow(() -> new ProjectException("user not found"));
+    }
+
 
 }
