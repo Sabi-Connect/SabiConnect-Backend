@@ -5,4 +5,6 @@ import com.skilledservice.ClientService.dto.response.ClientRegistrationResponse;
 
 public interface ClientService {
     ClientRegistrationResponse registerClient(RegistrationRequest registerRequest);
+
+    Long getNumberOfUsers();
 }

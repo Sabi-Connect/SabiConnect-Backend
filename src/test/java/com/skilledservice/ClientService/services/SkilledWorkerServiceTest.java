@@ -21,6 +21,14 @@ public class SkilledWorkerServiceTest {
 
     @Test
     public void SkilledWorkerRegistrationTest() {
+        RegistrationRequest registrationRequest = getRegistrationRequest();
+        SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
+        assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
+//        assertThat(skilledWorkerRepository).isNotNull();
+        assertThat(response).isNotNull();
+    }
+
+    private RegistrationRequest getRegistrationRequest() {
         RegistrationRequest registrationRequest = new RegistrationRequest();
         Address address = new Address();
         address.setHouseNumber("312");
@@ -28,16 +36,13 @@ public class SkilledWorkerServiceTest {
         address.setArea("Yaba");
         registrationRequest.setFirstName("Fitzgerald");
         registrationRequest.setLastName("McDonald");
+        registrationRequest.setUsername("Fitz");
         registrationRequest.setEmail("fitzgerald@gmail.com");
         registrationRequest.setPassword("password");
         registrationRequest.setPhoneNumber("1234567890");
         address = addressRepository.save(address);
         registrationRequest.setAddress(address);
-        SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
-        assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
-//        assertThat(skilledWorkerRepository).isNotNull();
-        assertThat(response).isNotNull();
+        return registrationRequest;
     }
-
 
 }
