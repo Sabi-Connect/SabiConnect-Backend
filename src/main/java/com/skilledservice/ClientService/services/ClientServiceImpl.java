@@ -39,14 +39,27 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public Long getNumberOfUsers() {
+        return null;
+    }
+
+    @Override
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
       User user = userRepository.findById(bookAppointmentRequest.getId())
               .orElseThrow(() ->new UsernameNotFoundException("User not found"));
       Appointment appointment =
-              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
-      appointment.setUserId(bookAppointmentRequest.getUserId());
+              appointmentService.bookAppointment(bookAppointmentRequest);
+      appointment.setUser(user);
+
+      User skilledWorker = userRepository.findById(bookAppointmentRequest.getId())
+              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
+            skilledWorker.getAppointments().add(appointment);
       appointmentService.save(appointment);
-      return modelMapper.map(appointment, BookAppointmentResponse.class);
+      BookAppointmentResponse response=
+              modelMapper.map(appointment, BookAppointmentResponse.class);
+      response.setMessage("Appointment booked successfully");
+      return response;
+
     }
 
     @Override
