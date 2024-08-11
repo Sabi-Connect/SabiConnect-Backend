@@ -1,33 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load("current", {
-            "packages":["map"],
-            // Note: you will need to get a mapsApiKey for your project.
-            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-            "mapsApiKey": "AIzaSyBq7q3753U4lQ4tIM5TrcPesf2NuKFcn7Y"
-        });
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Lat', 'Long', 'Name'],
-                [6.524379,  3.379206, 'Lagos'],
-                // [18.5204, 73.8567, 'Pune'],
-                // [19.1176, 72.9060, 'Powai'],
-            ]);
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+<!--    <script type="text/javascript">-->
+<!--        google.charts.load("current", {-->
+<!--            "packages":["map"],-->
+<!--            // Note: you will need to get a mapsApiKey for your project.-->
+<!--            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings-->
+<!--            "mapsApiKey": "AIzaSyBq7q3753U4lQ4tIM5TrcPesf2NuKFcn7Y"-->
+<!--        });-->
+<!--        google.charts.setOnLoadCallback(drawChart);-->
+<!--        function drawChart() {-->
+<!--            var data = google.visualization.arrayToDataTable([-->
+<!--                ['Lat', 'Long', 'Name'],-->
+<!--                [6.524379,  3.379206, 'Lagos'],-->
+<!--            ]);-->
 
-            var map = new google.visualization.Map(document.getElementById('map_div'));
-            map.draw(data, {
-                showTooltip: true,
-                showInfoWindow: true
-            });
-        }
+<!--            var map = new google.visualization.Map(document.getElementById('map_div'));-->
+<!--            map.draw(data, {-->
+<!--                showTooltip: true,-->
+<!--                showInfoWindow: true-->
+<!--            });-->
+<!--        }-->
 
-    </script>
-</head>
-<body>
-    <div id="map_div" style="width: 800px; height: 700px"></div>
-</body>
-</html>
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div id="map_div" style="width: 800px; height: 700px"></div>-->
+<!--</body>-->
+<!--</html>-->
