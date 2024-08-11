@@ -1,16 +1,22 @@
 package com.skilledservice.ClientService.services;
 
+import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.RegistrationRequest;
-import com.skilledservice.ClientService.dto.response.ClientRegistrationResponse;
+import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
+import com.skilledservice.ClientService.dto.response.*;
 import com.skilledservice.ClientService.models.Address;
+import com.skilledservice.ClientService.models.Appointment;
 import com.skilledservice.ClientService.models.User;
 import com.skilledservice.ClientService.repository.AddressRepository;
 import com.skilledservice.ClientService.repository.AppointmentRepository;
 import com.skilledservice.ClientService.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -20,6 +26,7 @@ public class ClientServiceImpl implements ClientService{
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final AppointmentService appointmentService;
 
     @Override
     public ClientRegistrationResponse registerClient(RegistrationRequest request) {
@@ -38,6 +45,37 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public Long getNumberOfUsers() {
         return userRepository.count();
+    }
+
+    @Override
+    public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
+      User user = userRepository.findById(bookAppointmentRequest.getId())
+              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
+      Appointment appointment =
+              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
+      appointment.setUserId(bookAppointmentRequest.getUserId());
+      appointmentService.save(appointment);
+      return modelMapper.map(appointment, BookAppointmentResponse.class);
+    }
+
+    @Override
+    public CancelAppointmentResponse cancelAppointment(Long id) {
+        return appointmentService.cancelAppointment(id);
+    }
+
+    @Override
+    public UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request) {
+        return appointmentService.updateAppointment(request);
+    }
+
+    @Override
+    public DeleteAppointmentResponse deleteAppointment(Long id) {
+        return appointmentService.deleteAppointment(id);
+    }
+
+    @Override
+    public List<ViewAllAppointmentsResponse> viewAllAppointment() {
+        return appointmentService.viewAllAppointment();
     }
 
 }

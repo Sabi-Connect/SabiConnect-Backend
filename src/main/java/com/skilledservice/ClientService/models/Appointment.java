@@ -28,6 +28,5 @@ public class Appointment {
     private LocalDateTime endTime;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @ManyToOne
-    private User user;
+    private Long userId;
 }

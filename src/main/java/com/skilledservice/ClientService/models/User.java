@@ -47,6 +47,8 @@ public class User {
     private Address address;
     @Enumerated(EnumType.STRING)
     private Category category;
+//    @OneToMany
+//    private Appointment appointment;
 
     @PrePersist
     private void setTimeCreated(){
