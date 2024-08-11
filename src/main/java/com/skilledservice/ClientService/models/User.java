@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
@@ -47,8 +48,9 @@ public class User {
     private Address address;
     @Enumerated(EnumType.STRING)
     private Category category;
-//    @OneToMany
-//    private Appointment appointment;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
 
     @PrePersist
     private void setTimeCreated(){

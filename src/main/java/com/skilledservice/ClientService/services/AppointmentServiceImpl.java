@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.services;
 
+import com.skilledservice.ClientService.dto.request.AddAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.dto.response.*;
@@ -82,6 +83,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointments, ViewAllAppointmentsResponse[].class));
 
         return response;
+    }
+
+    @Override
+    public Appointment addAppointment(AddAppointmentRequest request) {
+        return null;
     }
 
     @Override

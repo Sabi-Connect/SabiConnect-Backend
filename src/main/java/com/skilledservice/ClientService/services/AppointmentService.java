@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.services;
 
+import com.skilledservice.ClientService.dto.request.AddAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.dto.response.*;
@@ -14,6 +15,7 @@ public interface AppointmentService {
     UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request);
     DeleteAppointmentResponse deleteAppointment(Long id);
     List<ViewAllAppointmentsResponse> viewAllAppointment();
+     Appointment addAppointment(AddAppointmentRequest request);
 
     void save(Appointment appointment);
 }

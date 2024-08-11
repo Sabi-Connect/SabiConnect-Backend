@@ -4,6 +4,7 @@ import com.skilledservice.ClientService.dto.request.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.request.RegistrationRequest;
 import com.skilledservice.ClientService.dto.request.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.dto.response.*;
+import com.skilledservice.ClientService.exceptions.UserNotFoundException;
 import com.skilledservice.ClientService.models.Appointment;
 import com.skilledservice.ClientService.models.AppointmentStatus;
 import com.skilledservice.ClientService.models.User;
@@ -41,11 +42,14 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
       User user = userRepository.findById(bookAppointmentRequest.getUserId())
-              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
+              .orElseThrow(() ->new UserNotFoundException("User not found"));
       
       Appointment bookedAppointment =
               appointmentService.bookAppointment(bookAppointmentRequest);
-      bookedAppointment.setUserId(bookAppointmentRequest.getUserId());
+
+      User skilledWorker = userRepository.findById(user.getId())
+              .orElseThrow(()-> new UserNotFoundException("User not found"));
+      skilledWorker.getAppointments().add(bookedAppointment);
       appointmentService.save(bookedAppointment);
       return modelMapper.map(bookedAppointment, BookAppointmentResponse.class);
     }
