@@ -17,7 +17,7 @@ public class Skill {
     private Long id;
     private String skillName;
     @ManyToOne
-    private Client skilledWorker;
+    private SkilledWorker skilledWorker;
     private BigDecimal rate;
     @Enumerated(EnumType.STRING)
     private Category skillCategory;

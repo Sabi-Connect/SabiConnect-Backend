@@ -1,10 +1,12 @@
-package com.skilledservice.ClientService.services.ServiceUtils;
+package com.skilledservice.ClientService.services.implmentations;
 
+import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
 import com.skilledservice.ClientService.dto.responses.AddSkillResponse;
 import com.skilledservice.ClientService.data.models.Skill;
-import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.SkillRepository;
+import com.skilledservice.ClientService.services.ServiceUtils.SkillService;
+import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,7 @@ public class SkillServiceImpl implements SkillService {
     public AddSkillResponse addSkill(AddSkillRequest addSkillRequest) {
         Skill skill = new Skill();
         skill.setSkillName(addSkillRequest.getSkillName());
-        Client skilledWorker = skilledWorkerService.findById(addSkillRequest.getSkilledWorkerId());
+        SkilledWorker skilledWorker = skilledWorkerService.findById(addSkillRequest.getSkilledWorkerId());
         skill.setSkilledWorker(skilledWorker);
         skill.setSkillCategory(addSkillRequest.getCategory());
         skillRepository.save(skill);

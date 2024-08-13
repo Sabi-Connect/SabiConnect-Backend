@@ -31,13 +31,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointment;
 
-//        BookAppointmentResponse response = new BookAppointmentResponse();
-//        response.setAppointmentId(appointment.getId());
-//        response.setStartTime(appointment.getStartTime());
-//        response.setAmount(appointment.getAmount());
-//        response.setMessage("Appointment booked successfully");
-//        return response;
-
     }
 
 

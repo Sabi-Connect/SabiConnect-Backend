@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.services;
 
+import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.dto.requests.PostReviewRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.responses.ClientRegistrationResponse;
@@ -49,11 +50,10 @@ public class ReviewServiceTest {
         Long clientId = clientResponse.getClientId();
         assertThat(clientId).isNotNull();
         System.out.println(clientId);
-        assertThat(clientService.getNumberOfUsers()).isEqualTo(2L);
+        assertThat(clientService.getNumberOfUsers()).isEqualTo(1L);
 
         PostReviewRequest postReviewRequest = new PostReviewRequest();
-        Client skilledWorker = userRepository.findById(skilledWorkerId)
-                .orElseThrow(() -> new ProjectException("user not found"));
+        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
         postReviewRequest.setSkilledWorker(skilledWorker);
         postReviewRequest.setReview("impressive work ethic");
 
@@ -61,7 +61,7 @@ public class ReviewServiceTest {
 
         assertThat(reviewResponse).isNotNull();
         assertThat(reviewResponse.getReview()).isEqualTo("impressive work ethic");
-        // Assuming reviewResponse.getReviewerId() is used to find the review
+        assertThat(reviewResponse.getReviewerId());
         var review = reviewRepository.findById(reviewResponse.getPostId())
                 .orElseThrow(() -> new ProjectException("Review not found"));
         assertThat(review.getReview()).isEqualTo("impressive work ethic");

@@ -8,10 +8,9 @@ import com.skilledservice.ClientService.dto.responses.*;
 import java.util.List;
 
 public interface ClientService {
+
     ClientRegistrationResponse registerClient(RegistrationRequest registerRequest);
-
     Long getNumberOfUsers();
-
     BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest);
     CancelAppointmentResponse cancelAppointment(Long id);
     UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request);

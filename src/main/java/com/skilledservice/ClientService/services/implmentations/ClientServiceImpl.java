@@ -62,13 +62,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
-      Client user = userRepository.findById(bookAppointmentRequest.getId())
-              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
-      Appointment appointment =
-              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
-      appointment.setUserId(bookAppointmentRequest.getUserId());
-      appointmentService.save(appointment);
-      return modelMapper.map(appointment, BookAppointmentResponse.class);
+//      Client user = userRepository.findById(bookAppointmentRequest.getId())
+//              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
+//      Appointment appointment =
+//              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
+//      appointment.setUserId(bookAppointmentRequest.getUserId());
+//      appointmentService.save(appointment);
+//      return modelMapper.map(appointment, BookAppointmentResponse.class);
+        return null;
     }
 
     @Override
