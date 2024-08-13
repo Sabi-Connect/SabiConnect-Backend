@@ -1,6 +1,7 @@
 package com.skilledservice.ClientService.services.implmentations;
 
 import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
+import com.skilledservice.ClientService.dto.requests.PostReviewRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.data.models.Address;
@@ -90,6 +91,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<ViewAllAppointmentsResponse> viewAllAppointment() {
         return appointmentService.viewAllAppointment();
+    }
+
+    @Override
+    public PostReviewResponse PostReview(PostReviewRequest postReviewRequest) {
+        return null;
     }
 
 }
