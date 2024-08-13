@@ -26,7 +26,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment bookAppointment(BigDecimal bookAppointmentRequest) {
         Appointment appointment = modelMapper.map(bookAppointmentRequest, Appointment.class);
-        appointment.setStatus(AppointmentStatus.WAITING);
+        appointment.setStatus(AppointmentStatus.SCHEDULED);
         appointmentRepository.save(appointment);
 
         return appointment;
