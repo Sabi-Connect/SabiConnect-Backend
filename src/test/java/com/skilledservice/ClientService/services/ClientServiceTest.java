@@ -1,9 +1,10 @@
 package com.skilledservice.ClientService.services;
 
-import com.skilledservice.ClientService.dto.request.RegistrationRequest;
-import com.skilledservice.ClientService.dto.response.ClientRegistrationResponse;
-import com.skilledservice.ClientService.models.Address;
-import com.skilledservice.ClientService.repository.UserRepository;
+import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
+import com.skilledservice.ClientService.dto.responses.ClientRegistrationResponse;
+import com.skilledservice.ClientService.data.models.Address;
+import com.skilledservice.ClientService.data.repository.ClientRepository;
+import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,24 +14,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class ClientServiceTest {
     @Autowired
-    private ClientServiceImpl clientServiceImpl;
+    private ClientService clientService;
+    @Autowired
+    private ClientRepository userRepository;
 
     @Test
     public void registerClient() {
-        RegistrationRequest registrationRequest = new RegistrationRequest();
-        registrationRequest.setFirstName("John");
-        registrationRequest.setLastName("Doe");
-        registrationRequest.setUsername("JohnDoe");
-        registrationRequest.setPhoneNumber("123456789");
-        registrationRequest.setEmail("john@doe.com");
+        RegistrationRequest registerClientRequest = new RegistrationRequest();
+        registerClientRequest.setFirstName("John");
+        registerClientRequest.setLastName("Doe");
+        registerClientRequest.setUsername("JohnDoe");
+        registerClientRequest.setPhoneNumber("123456789");
+        registerClientRequest.setEmail("john@doe.com");
         Address address = new Address();
         address.setStreet("Street");
         address.setArea("area");
         address.setHouseNumber("number");
-        registrationRequest.setAddress(address);
-        registrationRequest.setPassword("password");
-        ClientRegistrationResponse response = clientServiceImpl.registerClient(registrationRequest);
+        registerClientRequest.setAddress(address);
+        registerClientRequest.setPassword("password");
+        ClientRegistrationResponse response = clientService.registerClient(registerClientRequest);
         assertThat(response).isNotNull();
-        assertThat(clientServiceImpl.getNumberOfUsers()).isEqualTo(1L);
+        assertThat(clientService.getNumberOfUsers()).isEqualTo(2L);
     }
 }

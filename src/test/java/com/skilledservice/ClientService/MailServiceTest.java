@@ -1,7 +1,7 @@
 package com.skilledservice.ClientService;
 
-import com.skilledservice.ClientService.dto.request.SendMailRequest;
-import com.skilledservice.ClientService.services.MailService;
+import com.skilledservice.ClientService.dto.requests.SendMailRequest;
+import com.skilledservice.ClientService.services.ServiceUtils.MailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

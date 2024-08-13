@@ -1,16 +1,17 @@
 package com.skilledservice.ClientService.services;
 
-import com.skilledservice.ClientService.dto.request.AddSkillRequest;
-import com.skilledservice.ClientService.dto.request.RegistrationRequest;
-import com.skilledservice.ClientService.dto.response.AddSkillResponse;
-import com.skilledservice.ClientService.dto.response.SkilledWorkerRegistrationResponse;
-import com.skilledservice.ClientService.exceptions.ProjectException;
-import com.skilledservice.ClientService.models.Address;
-import com.skilledservice.ClientService.models.Category;
-import com.skilledservice.ClientService.models.Skill;
-import com.skilledservice.ClientService.repository.AddressRepository;
-import com.skilledservice.ClientService.repository.SkillRepository;
-import com.skilledservice.ClientService.repository.UserRepository;
+import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
+import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
+import com.skilledservice.ClientService.dto.responses.AddSkillResponse;
+import com.skilledservice.ClientService.dto.responses.SkilledWorkerRegistrationResponse;
+import com.skilledservice.ClientService.data.models.Address;
+import com.skilledservice.ClientService.data.constants.Category;
+import com.skilledservice.ClientService.data.models.Skill;
+import com.skilledservice.ClientService.data.repository.AddressRepository;
+import com.skilledservice.ClientService.data.repository.SkillRepository;
+import com.skilledservice.ClientService.data.repository.ClientRepository;
+import com.skilledservice.ClientService.services.ServiceUtils.SkillService;
+import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +22,7 @@ public class SkillServiceTest {
     @Autowired
     private SkilledWorkerService skilledWorkerService;
     @Autowired
-    private UserRepository userRepository;
+    private ClientRepository userRepository;
     @Autowired
     private SkillRepository skillRepository;
     @Autowired
@@ -38,6 +39,7 @@ public class SkillServiceTest {
         registrationRequest.setLastName("McDonald");
         registrationRequest.setEmail("fitzgerald@gmail.com");
         registrationRequest.setPassword("password");
+        registrationRequest.setUsername("Fitz");
         registrationRequest.setPhoneNumber("1234567890");
         Address address = new Address();
         address.setHouseNumber("312");
@@ -57,7 +59,7 @@ public class SkillServiceTest {
         System.out.println("ID --> " +skillResponse.getSkilledWorkerId());
         assertThat(skillService.findSkillFor(response.getSkilledWorkerId())).hasSize(1);
         Skill skill = skillRepository.findSkillById(skillResponse.getSkillId());
-//                .orElseThrow(()-> new ProjectException("user does not exist"));
+
         assertThat(skill.getSkillName()).isEqualTo("Electronics Electrician");
         assertThat(skill.getSkilledWorker().getId()).isEqualTo(response.getSkilledWorkerId());
     }
@@ -90,6 +92,7 @@ public class SkillServiceTest {
         registrationRequest.setFirstName("Fitzgerald");
         registrationRequest.setLastName("McDonald");
         registrationRequest.setEmail("fitzgerald@gmail.com");
+        registrationRequest.setUsername("Fitz");
         registrationRequest.setPassword("password");
         registrationRequest.setPhoneNumber("1234567890");
         Address address = new Address();
@@ -116,6 +119,7 @@ public class SkillServiceTest {
         AddSkillResponse skillResponse1 = skillService.addSkill(addSkillRequest1);
 
         var skills = skillRepository.findSkillBySkillWorkerId(skillResponse.getSkilledWorkerId());
+        assertThat(skillResponse1).isNotNull();
         assertThat(skills.size()).isEqualTo(2L);
         assertThat(skills.get(1).getSkillName()).isEqualTo("Carpenter");
         assertThat(skills.get(0).getSkillName()).isEqualTo("Electronics Electrician");
