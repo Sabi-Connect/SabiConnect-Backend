@@ -44,7 +44,6 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     public SkilledWorkerRegistrationResponse registerSkilledWorker(RegistrationRequest registrationRequest) {
         User skilledWorker = mapper.map(registrationRequest, User.class);
         skilledWorker.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-        skilledWorker.setRole(Role.SKILLEDWORKER);
         skilledWorker=userRepository.save(skilledWorker);
 
         SkilledWorkerRegistrationResponse registrationResponse = new SkilledWorkerRegistrationResponse();
