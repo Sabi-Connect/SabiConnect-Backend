@@ -1,40 +1,59 @@
--- truncate table skilledWorkers cascade;
+truncate table skilled_workers cascade;
 truncate table skills cascade;
-truncate table users cascade;
+truncate table clients cascade;
 truncate table address cascade;
-
--- insert data into tables
-
-insert into address(id)values
-                           (2),
-                           (3),
-                           (4),
-                           (5),
-                           (6),
-                           (7),
-                           (8),
-                           (9),
-                           (10);
-
-insert into users(id, first_name, last_name, username, phone_number, email, address_id, password, time_created) values
-    (100, 'Fitzgerald', 'Ejidike', 'fitz94', '07012345678', 'fitzG@gmail.com', 2, 'password', '2024-07-28T18:55:06.333644100'),
-    (101, 'Glory', 'David', 'chichi', '08112345678', 'chichi@gmail.com', 3, 'password', '2024-07-28T18:55:06.333644100'),
-    (102, 'Meshack', 'Yaro', 'bigbird', '08012345678', 'bigbirdhq@gmail.com', 4, 'password', '2024-07-28T18:55:06.333644100'),
-    (103, 'Victor', 'Msonter', 'gagnon', '09012345678', 'gagnon@gmail.com', 5, 'password', '2024-07-28T18:55:06.333644100'),
-    (104, 'joseph', 'Yisa', 'cultist', '09112345678', 'cultist@gmail.com', 6, 'password', '2024-07-28T18:55:06.333644100');
+truncate table reviews cascade;
+truncate table appointments cascade;
+truncate table skills cascade;
 
 
-insert into skilledWorkers(id, first_name, last_name, username, phone_number, email, address_id, password,  time_created) values
-    (200, 'Phillip', 'Ajibola', 'bobbyjay', '07001234567', 'bobbyjay@gmail.com', 6, 'password','electrician', '2024-07-28T18:55:06.333644100'),
-    (201, 'Ayomide', 'Omoniyi', 'ayzzy', '08101234567', 'chichi@gmail.com', 7, 'password', '2024-07-28T18:55:06.333644100'),
-    (202, 'Ramon', 'Fatoye', 'jargo', '08001234567', 'jargo@gmail.com', 8, 'password', '2024-07-28T18:55:06.333644100'),
-    (203, 'Abbey', 'Bioke', 'biokes', '09001234567', 'biokes@gmail.com', 9, 'password', '2024-07-28T18:55:06.333644100'),
-    (204, 'Michael', 'Dikandu', 'banksfc', '09101234567', 'banksfc@gmail.com', 10, 'password', '2024-07-28T18:55:06.333644100');
+insert into address(id, area, house_number, street)values
+    (1, 'Shomolu', 12, 'church street'),
+    (2, 'Yaba', 32, 'adekunle'),
+    (3, 'Epe', 21, 'adewale'),
+    (4, 'Ajah', 15, 'adesanya');
 
 
--- insert into skills(id, skill_category, skilled_worker_id) values
---     (100, 'ELECTRICAL', 100);
---     (101, 'PLUMBING', 101),
---     (102, 'FASHION', 102),
---     (103, 'FASHION', 103),
---     (104, 'BARBER', 104);
+
+INSERT INTO skilled_workers (address_id, id, first_name, last_name, password, phone_number, time_updated, email, username)
+VALUES
+    (1, 1, 'John', 'Doe', 'password123', '123-456-7890', NOW(), 'john.doe@example.com', 'JohnDoe'),
+    (2, 3, 'Jane', 'Smith', 'password456', '098-765-4321', NOW(), 'jane.smith@example.com', 'JaneSmith'),
+    (3, 4, 'Alice', 'Johnson', 'password789', '555-555-5555', NOW(), 'alice.johnson@example.com', 'AliceJohnson'),
+    (4, 2, 'Bob', 'Brown', 'password321', '444-444-4444', NOW(), 'bob.brown@example.com', 'BobBrown');
+
+
+
+INSERT INTO clients (id, address_id, first_name, last_name, password, phone_number, time_updated, email)
+VALUES
+    (1, 1, 'Michael', 'Scott', 'password123', '123-456-7890', NOW(), 'michael.scott@example.com'),
+    (2, 2, 'Pam', 'Beesly', 'password456', '098-765-4321', NOW(), 'pam.beesly@example.com'),
+    (3, 3, 'Jim', 'Halpert', 'password789', '555-555-5555', NOW(), 'jim.halpert@example.com'),
+    (4, 4, 'Dwight', 'Schrute', 'password321', '444-444-4444', NOW(), 'dwight.schrute@example.com');
+
+
+
+INSERT INTO reviews (client_id, review_date, skilled_worker_id, review)
+VALUES
+    (1, '2024-08-01', 1, 'Excellent work, very professional.'),
+    (2, '2024-08-02', 2, 'Good job, but could improve on punctuality.'),
+    (3, '2024-08-03', 3, 'Average service, met expectations.'),
+    (4, '2024-08-04', 4, 'Outstanding performance, highly recommended.');
+
+
+
+INSERT INTO appointments (clients_id, schedule_time, skilled_workers_id, status)
+VALUES
+    (1, '2024-08-10 10:00:00', 1, 'ACCEPTED'),
+    (2, '2024-08-11 14:00:00', 2, 'DECLINED'),
+    (3, '2024-08-12 09:00:00', 3, 'CANCELLED'),
+    (4, '2024-08-13 16:00:00', 4, 'SCHEDULED');
+
+
+
+INSERT INTO skills (id, skilled_worker_id, skill_category, skill_name)
+VALUES
+    (1, 1, 'ELECTRICAL', 'Wiring'),
+    (2, 2, 'PLUMBING', 'Pipe Fitting'),
+    (3, 3, 'CARPENTRY', 'Woodworking'),
+    (4, 4, 'PHOTOGRAPHY', 'Event Photography');

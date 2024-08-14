@@ -1,6 +1,5 @@
 package com.skilledservice.ClientService.dto.requests;
 
-import com.skilledservice.ClientService.data.models.Address;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +12,8 @@ public class RegistrationRequest {
     private String email;
     private String phoneNumber;
     private String password;
-    private Address address;
+    private String houseNumber;
+    private String street;
+    private String area;
+
 }

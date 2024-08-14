@@ -42,12 +42,10 @@ public class Client {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
     @OneToOne
     private Address address;
-    @Enumerated(EnumType.STRING)
-    private Category category;
 
     @PrePersist
     private void setTimeCreated(){

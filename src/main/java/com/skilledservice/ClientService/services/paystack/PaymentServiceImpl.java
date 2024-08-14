@@ -15,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 public class PaymentServiceImpl implements PaymentService {
 
     private final AppConfig appConfig;
-//    private final String PAYSTACK_URL = "https://api.paystack.co/transaction/initialize";
 
     public PaymentServiceImpl(AppConfig appConfig) {
         this.appConfig = appConfig;

@@ -8,10 +8,12 @@ import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+//@Sql(scripts = {"/db/data.sql"})
 public class ClientServiceTest {
     @Autowired
     private ClientService clientService;
@@ -26,14 +28,12 @@ public class ClientServiceTest {
         registerClientRequest.setUsername("JohnDoe");
         registerClientRequest.setPhoneNumber("123456789");
         registerClientRequest.setEmail("john@doe.com");
-        Address address = new Address();
-        address.setStreet("Street");
-        address.setArea("area");
-        address.setHouseNumber("number");
-        registerClientRequest.setAddress(address);
         registerClientRequest.setPassword("password");
+        registerClientRequest.setHouseNumber("1");
+        registerClientRequest.setStreet("Herbert Maccaulay way");
+        registerClientRequest.setArea("Yaba");
         ClientRegistrationResponse response = clientService.registerClient(registerClientRequest);
         assertThat(response).isNotNull();
-        assertThat(clientService.getNumberOfUsers()).isEqualTo(2L);
+        assertThat(clientService.getNumberOfUsers()).isEqualTo(1L);
     }
 }
