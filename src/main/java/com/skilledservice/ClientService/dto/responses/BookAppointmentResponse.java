@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.dto.responses;
 
+import com.skilledservice.ClientService.data.constants.AppointmentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ public class BookAppointmentResponse {
 
     private Long appointmentId;
     private BigDecimal amount;
-    private LocalDateTime startTime;
+    private LocalDateTime scheduleTime;
+    private AppointmentStatus status;
     private String message;
 }
