@@ -7,4 +7,5 @@ import com.skilledservice.ClientService.dto.responses.PaymentResponse;
 public interface PaymentService {
 
     PaymentResponse makePayment(PaymentRequest paymentRequest);
+
 }
