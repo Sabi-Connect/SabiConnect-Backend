@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class DeleteAppointmentResponse {
-    private String message;
-
+@AllArgsConstructor
+public class ApiResponse<T> {
+    private T data;
+    private Boolean status;
 }

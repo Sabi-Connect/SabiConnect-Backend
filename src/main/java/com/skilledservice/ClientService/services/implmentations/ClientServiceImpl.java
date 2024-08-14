@@ -1,7 +1,9 @@
 package com.skilledservice.ClientService.services.implmentations;
 
+import com.skilledservice.ClientService.data.models.SkilledWorker;
+import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
 import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.PostReviewRequest;
+import com.skilledservice.ClientService.dto.requests.DeleteAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
 import com.skilledservice.ClientService.data.models.Address;
@@ -9,11 +11,14 @@ import com.skilledservice.ClientService.data.models.Appointment;
 import com.skilledservice.ClientService.data.constants.Role;
 import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
-import com.skilledservice.ClientService.data.repository.AppointmentRepository;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
 import com.skilledservice.ClientService.dto.responses.*;
+import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
+import com.skilledservice.ClientService.exceptions.UserNotFoundException;
 import com.skilledservice.ClientService.services.ServiceUtils.AppointmentService;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
+import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,14 +26,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AppointmentRepository appointmentRepository;
-    private final ClientRepository userRepository;
+    private final SkilledWorkerService skilledWorkerService;
+    private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
     private final AppointmentService appointmentService;
 
@@ -45,9 +51,9 @@ public class ClientServiceImpl implements ClientService {
         user.setRole(Role.CLIENT);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         Address address = new Address();
-        address= addressRepository.save(address);
+        address = addressRepository.save(address);
         user.setAddress(address);
-        user = userRepository.save(user);
+        user = clientRepository.save(user);
 
         ClientRegistrationResponse response = new ClientRegistrationResponse();
         response.setClientId(user.getId());
@@ -58,45 +64,84 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Long getNumberOfUsers() {
-        return userRepository.count();
+        return clientRepository.count();
     }
 
     @Override
+    @Transactional
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
-//      Client user = userRepository.findById(bookAppointmentRequest.getId())
-//              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
-//      Appointment appointment =
-//              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
-//      appointment.setUserId(bookAppointmentRequest.getUserId());
-//      appointmentService.save(appointment);
-//      return modelMapper.map(appointment, BookAppointmentResponse.class);
-        return null;
+        Client client = clientRepository.findById(bookAppointmentRequest.getClientId())
+                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Appointment appointment =
+                appointmentService.bookAppointment(bookAppointmentRequest);
+        appointment.setClient(client);
+        client.getAppointment().add(appointment);
+        appointmentService.save(appointment);
+
+        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
+        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
+        appointment.setSkilledWorker(skilledWorker);
+        skilledWorker.getAppointment().add(appointment);
+        appointmentService.save(appointment);
+
+        BookAppointmentResponse response =
+                modelMapper.map(appointment, BookAppointmentResponse.class);
+        response.setMessage("Appointment booked successfully");
+        return response;
+
+
     }
 
     @Override
     public CancelAppointmentResponse cancelAppointment(Long id) {
-        return appointmentService.cancelAppointment(id);
+        CancelAppointmentResponse response = new CancelAppointmentResponse();
+       modelMapper.map(response, Appointment.class);
+        response.setMessage("Appointment cancelled successfully");
+        return response;
     }
 
     @Override
-    public UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request) {
-        return appointmentService.updateAppointment(request);
+    @Transactional
+    public UpdateAppointmentResponse updateAppointment(Long Id,UpdateAppointmentRequest request) {
+        Client client = clientRepository.findById(request.getClientId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Optional<Appointment> appointment = appointmentService.findAppointmentById(Id);
+        appointment.ifPresent(value -> client.getAppointment().add(value));
+
+        UpdateAppointmentResponse response = modelMapper.map(appointment,UpdateAppointmentResponse.class);
+        response.setMessage("Appointment updated successfully");
+        return response;
     }
 
     @Override
-    public DeleteAppointmentResponse deleteAppointment(Long id) {
-        return appointmentService.deleteAppointment(id);
+    @Transactional
+    public DeleteAppointmentResponse deleteAppointment(Long id, DeleteAppointmentRequest request) {
+        Client client = clientRepository.findById(id)
+                .orElseThrow(()->new UserNotFoundException("User not found"));
+        var appointment = appointmentService.findAppointmentById(request.getId());
+        appointmentService.deleteAppointment(appointment.get().getId());
+        client.getAppointment().remove(appointment);
+        DeleteAppointmentResponse response = new DeleteAppointmentResponse();
+         response.setMessage("Appointment  deleted successfully");
+         return response;
     }
 
     @Override
     public List<ViewAllAppointmentsResponse> viewAllAppointment() {
+
+
         return appointmentService.viewAllAppointment();
     }
 
-    @Override
-    public PostReviewResponse PostReview(PostReviewRequest postReviewRequest) {
-        return null;
-    }
 
 }
+
+
+
+
+
+
+
+
+
 

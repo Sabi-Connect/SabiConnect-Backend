@@ -1,7 +1,8 @@
 package com.skilledservice.ClientService.dto.requests;
 
-import com.skilledservice.ClientService.models.AppointmentStatus;
-import com.skilledservice.ClientService.models.Category;
+
+import com.skilledservice.ClientService.data.constants.AppointmentStatus;
+import com.skilledservice.ClientService.data.constants.Category;
 import lombok.Getter;
 import lombok.Setter;
 

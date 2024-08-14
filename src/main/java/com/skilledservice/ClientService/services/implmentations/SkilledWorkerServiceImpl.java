@@ -50,7 +50,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         skilledWorker.setPhoneNumber(registrationRequest.getPhoneNumber());
         skilledWorker.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         skilledWorker.setUsername(registrationRequest.getUsername());
-        skilledWorker.setRole(Role.SKILLEDWORKER);
+        skilledWorker.setRole(Role.SKILLED_WORKER);
         skilledWorker = skilledWorkerRepository.save(skilledWorker);
 
         return getSkilledWorkerRegistrationResponse(skilledWorker);

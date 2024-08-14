@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class UpdateAppointmentRequest {
-    private Long appointmentId;
     private Long clientId;
     private BigDecimal amount;
     private LocalDateTime startTime;

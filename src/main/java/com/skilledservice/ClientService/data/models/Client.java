@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
@@ -46,8 +47,10 @@ public class Client {
     private Role role;
     @OneToOne
     private Address address;
-    @Enumerated(EnumType.STRING)
-    private Category category;
+
+    @OneToMany(mappedBy = "client",
+            cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+    private List<Appointment> appointment;
 
     @PrePersist
     private void setTimeCreated(){
