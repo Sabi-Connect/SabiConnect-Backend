@@ -6,9 +6,8 @@ import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.responses.ClientRegistrationResponse;
 import com.skilledservice.ClientService.dto.responses.PostReviewResponse;
 import com.skilledservice.ClientService.dto.responses.SkilledWorkerRegistrationResponse;
-import com.skilledservice.ClientService.exceptions.ProjectException;
+import com.skilledservice.ClientService.exceptions.SabiConnectException;
 import com.skilledservice.ClientService.data.models.Address;
-import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
 import com.skilledservice.ClientService.data.repository.ReviewRepository;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
@@ -18,14 +17,14 @@ import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerServi
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
+//@Sql(scripts = {"/db/data.sql"})
 public class ReviewServiceTest {
-    @Autowired
-    private AddressRepository addressRepository;
     @Autowired
     private SkilledWorkerService skilledWorkerService;
     @Autowired
@@ -34,8 +33,7 @@ public class ReviewServiceTest {
     private ReviewRepository reviewRepository;
     @Autowired
     private ReviewService reviewService;
-    @Autowired
-    private ClientRepository userRepository;
+
 
     @Test
     public void postReviewForSkilledWorkerTest() {
@@ -43,13 +41,12 @@ public class ReviewServiceTest {
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         Long skilledWorkerId = response.getSkilledWorkerId();
         assertThat(skilledWorkerId).isNotNull();
-        System.out.println(skilledWorkerId);
+        assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
 
         RegistrationRequest registerClientRequest = getRegisterClientRequest();
         ClientRegistrationResponse clientResponse = clientService.registerClient(registerClientRequest);
         Long clientId = clientResponse.getClientId();
         assertThat(clientId).isNotNull();
-        System.out.println(clientId);
         assertThat(clientService.getNumberOfUsers()).isEqualTo(1L);
 
         PostReviewRequest postReviewRequest = new PostReviewRequest();
@@ -63,7 +60,7 @@ public class ReviewServiceTest {
         assertThat(reviewResponse.getReview()).isEqualTo("impressive work ethic");
         assertThat(reviewResponse.getReviewerId());
         var review = reviewRepository.findById(reviewResponse.getPostId())
-                .orElseThrow(() -> new ProjectException("Review not found"));
+                .orElseThrow(() -> new SabiConnectException("Review not found"));
         assertThat(review.getReview()).isEqualTo("impressive work ethic");
         assertThat(reviewRepository.count()).isEqualTo(1L);
 
@@ -77,28 +74,27 @@ public class ReviewServiceTest {
         registerClientRequest.setUsername("JohnDoe");
         registerClientRequest.setPhoneNumber("123456789");
         registerClientRequest.setEmail("john@doe.com");
-        Address address = new Address();
-        address.setStreet("Street");
-        address.setArea("area");
-        address.setHouseNumber("number");
-        registerClientRequest.setAddress(address);
+        registerClientRequest.setStreet("Street");
+        registerClientRequest.setArea("area");
+        registerClientRequest.setHouseNumber("number");
         registerClientRequest.setPassword("password");
+
         return registerClientRequest;
     }
 
     private RegistrationRequest getRegisterSkilledWorkerRequest() {
         RegistrationRequest registrationRequest = new RegistrationRequest();
-        Address address = new Address();
-        address.setHouseNumber("312");
-        address.setStreet("Herbert Macaulay Way");
-        address.setArea("Yaba");
+
+        registrationRequest.setHouseNumber("312");
+        registrationRequest.setStreet("Herbert Macaulay Way");
+        registrationRequest.setArea("Yaba");
         registrationRequest.setFirstName("Fitzgerald");
         registrationRequest.setLastName("McDonald");
+        registrationRequest.setUsername("FitzG");
         registrationRequest.setEmail("fitzgerald@gmail.com");
         registrationRequest.setPassword("password");
         registrationRequest.setPhoneNumber("1234567890");
-        address = addressRepository.save(address);
-        registrationRequest.setAddress(address);
+
         return registrationRequest;
     }
 

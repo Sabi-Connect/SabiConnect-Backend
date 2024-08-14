@@ -19,7 +19,7 @@ import static java.time.LocalDateTime.now;
 @Setter
 @Getter
 @Entity
-@Table(name = "Skilled_Workers")
+@Table(name = "skilled_workers")
 public class SkilledWorker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +41,8 @@ public class SkilledWorker {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
     @OneToOne
     private Address address;
     @Enumerated(EnumType.STRING)

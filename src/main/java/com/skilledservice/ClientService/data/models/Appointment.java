@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
+@Table(name = "appointments")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +26,13 @@ public class Appointment {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime scheduleTime;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
     @ManyToOne
-    @JoinColumn(name = "skilled_workers")
+    @JoinColumn(name = "skilled_workers_id")
     private SkilledWorker skilledWorker;
     @ManyToOne
-    @JoinColumn(name = "clients")
+    @JoinColumn(name = "clients_id")
     private Client client;
 
 }

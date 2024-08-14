@@ -1,10 +1,11 @@
 package com.skilledservice.ClientService.services.implmentations;
 
+import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.responses.AddSkillResponse;
 import com.skilledservice.ClientService.dto.responses.SkilledWorkerRegistrationResponse;
-import com.skilledservice.ClientService.exceptions.ProjectException;
+import com.skilledservice.ClientService.exceptions.SabiConnectException;
 import com.skilledservice.ClientService.data.constants.Role;
 import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
@@ -21,20 +22,18 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     private final SkillService skillService;
     private final PasswordEncoder passwordEncoder;
     private final SkilledWorkerRepository skilledWorkerRepository;
+    private final AddressServiceImpl addressService;
 
     @Autowired
     @Lazy
-    public SkilledWorkerServiceImpl(SkillService skillService, PasswordEncoder passwordEncoder, SkilledWorkerRepository skilledWorkerRepository) {
+    public SkilledWorkerServiceImpl(SkillService skillService, PasswordEncoder passwordEncoder, SkilledWorkerRepository skilledWorkerRepository, AddressServiceImpl addressService) {
 //        this.mapper = mapper;
 //        this.userRepository = userRepository;
         this.skillService = skillService;
         this.passwordEncoder = passwordEncoder;
         this.skilledWorkerRepository = skilledWorkerRepository;
+        this.addressService = addressService;
     }
-//    @Autowired
-//    public void SkillService(SkillService skillService) {
-//        this.skillService = skillService;
-//    }
 
     @Override
     public Long getNumberOfUsers() {
@@ -43,6 +42,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     @Override
     public SkilledWorkerRegistrationResponse registerSkilledWorker(RegistrationRequest registrationRequest) {
+
         SkilledWorker skilledWorker = new SkilledWorker();
         skilledWorker.setFirstName(registrationRequest.getFirstName());
         skilledWorker.setLastName(registrationRequest.getLastName());
@@ -50,7 +50,8 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         skilledWorker.setPhoneNumber(registrationRequest.getPhoneNumber());
         skilledWorker.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         skilledWorker.setUsername(registrationRequest.getUsername());
-        skilledWorker.setRole(Role.SKILLED_WORKER);
+        Address newAddress = addressService.createAddress(registrationRequest);
+        skilledWorker.setAddress(newAddress);
         skilledWorker = skilledWorkerRepository.save(skilledWorker);
 
         return getSkilledWorkerRegistrationResponse(skilledWorker);
@@ -74,7 +75,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     @Override
     public SkilledWorker findById(Long skilledWorkerId) {
-        return skilledWorkerRepository.findById(skilledWorkerId).orElseThrow(() -> new ProjectException("user not found"));
+        return skilledWorkerRepository.findById(skilledWorkerId).orElseThrow(() -> new SabiConnectException("user not found"));
     }
 
 
