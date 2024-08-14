@@ -16,6 +16,6 @@ public interface AppointmentService {
     UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request);
     DeleteAppointmentResponse deleteAppointment(Long id);
     List<ViewAllAppointmentsResponse> viewAllAppointment();
-
     void save(Appointment appointment);
+
 }

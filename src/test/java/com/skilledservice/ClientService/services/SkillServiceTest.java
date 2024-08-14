@@ -15,9 +15,12 @@ import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerServi
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Sql(scripts = {"/db/data.sql"})
 public class SkillServiceTest {
     @Autowired
     private SkilledWorkerService skilledWorkerService;
@@ -46,7 +49,7 @@ public class SkillServiceTest {
         address.setStreet("Herbert Macaulay Way");
         address.setArea("Yaba");
         address = addressRepository.save(address);
-        registrationRequest.setAddress(address);
+//        registrationRequest.setAddress(address);
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
         assertThat(response.getSkilledWorkerId()).isNotNull();
@@ -100,7 +103,7 @@ public class SkillServiceTest {
         address.setStreet("Herbert Macaulay Way");
         address.setArea("Yaba");
         address = addressRepository.save(address);
-        registrationRequest.setAddress(address);
+//        registrationRequest.setAddress(address);
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
         assertThat(response).isNotNull();

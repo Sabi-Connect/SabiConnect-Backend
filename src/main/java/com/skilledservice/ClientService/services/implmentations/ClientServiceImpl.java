@@ -25,12 +25,10 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ClientServiceImpl implements ClientService {
-    private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AppointmentRepository appointmentRepository;
-    private final ClientRepository userRepository;
-    private final AddressRepository addressRepository;
     private final AppointmentService appointmentService;
+    private final AddressService addressService;
+    private final ClientRepository clientRepository;
 
     @Override
     public ClientRegistrationResponse registerClient(RegistrationRequest request) {
@@ -42,12 +40,10 @@ public class ClientServiceImpl implements ClientService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setUsername(request.getUsername());
         user.setPhoneNumber(request.getPhoneNumber());
-        user.setRole(Role.CLIENT);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        Address address = new Address();
-        address= addressRepository.save(address);
+        Address address = addressService.createAddress(request);
         user.setAddress(address);
-        user = userRepository.save(user);
+        user = clientRepository.save(user);
 
         ClientRegistrationResponse response = new ClientRegistrationResponse();
         response.setClientId(user.getId());
@@ -58,18 +54,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Long getNumberOfUsers() {
-        return userRepository.count();
+        return clientRepository.count();
     }
 
     @Override
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
-//      Client user = userRepository.findById(bookAppointmentRequest.getId())
-//              .orElseThrow(() ->new UsernameNotFoundException("User not found"));
-//      Appointment appointment =
-//              appointmentService.bookAppointment(bookAppointmentRequest.getAmount());
-//      appointment.setUserId(bookAppointmentRequest.getUserId());
-//      appointmentService.save(appointment);
-//      return modelMapper.map(appointment, BookAppointmentResponse.class);
+
         return null;
     }
 
@@ -91,11 +81,6 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<ViewAllAppointmentsResponse> viewAllAppointment() {
         return appointmentService.viewAllAppointment();
-    }
-
-    @Override
-    public PostReviewResponse PostReview(PostReviewRequest postReviewRequest) {
-        return null;
     }
 
 }
