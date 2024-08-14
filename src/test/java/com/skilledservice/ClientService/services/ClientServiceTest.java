@@ -6,10 +6,8 @@ import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
 import com.skilledservice.ClientService.data.repository.AppointmentRepository;
 import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.CancelAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.responses.ClientRegistrationResponse;
-import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static com.skilledservice.ClientService.data.constants.AppointmentStatus.CANCELLED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
+
 
 @SpringBootTest
 @Sql(scripts = "/db/data.sql")
@@ -46,11 +44,9 @@ public class ClientServiceTest {
         registerClientRequest.setUsername("JohnDoe");
         registerClientRequest.setPhoneNumber("123456789");
         registerClientRequest.setEmail("john@doe.com");
-        Address address = new Address();
-        address.setStreet("Street");
-        address.setArea("area");
-        address.setHouseNumber("number");
-        registerClientRequest.setAddress(address);
+        registerClientRequest.setStreet("Street");
+        registerClientRequest.setArea("area");
+        registerClientRequest.setHouseNumber("number");
         registerClientRequest.setPassword("password");
         ClientRegistrationResponse response = clientService.registerClient(registerClientRequest);
         assertThat(response).isNotNull();

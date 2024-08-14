@@ -73,10 +73,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<ViewAllAppointmentsResponse> viewAllAppointment() {
         var  appointments = appointmentRepository.findAll();
-        var response = List.of(modelMapper
-                .map(appointments, ViewAllAppointmentsResponse[].class));
 
-        return response;
+        return List.of(modelMapper
+                .map(appointments, ViewAllAppointmentsResponse[].class));
     }
 
     @Override

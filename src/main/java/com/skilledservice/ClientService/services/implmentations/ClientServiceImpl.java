@@ -48,7 +48,6 @@ public class ClientServiceImpl implements ClientService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setUsername(request.getUsername());
         user.setPhoneNumber(request.getPhoneNumber());
-        user.setRole(Role.CLIENT);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         Address address = new Address();
         address = addressRepository.save(address);
