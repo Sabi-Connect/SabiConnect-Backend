@@ -43,14 +43,11 @@ public class Client {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
-<<<<<<< HEAD
-=======
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
     @OneToMany(mappedBy = "client",
         cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Appointment> appointment;
->>>>>>> 24d3667959257becaefb565f3b6c4f3fb80317e5
     @OneToOne
     private Address address;
 

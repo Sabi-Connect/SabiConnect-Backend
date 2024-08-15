@@ -12,4 +12,5 @@ public interface PaymentService {
     ResponseBodyDetails<?> initiatePayment(PaymentRequest paymentRequest);
 
     ResponseBodyDetails<?> verifyPayment(String reference);
+
 }

@@ -52,9 +52,11 @@ VALUES
 
 
 
+
 INSERT INTO skills (id, skilled_worker_id, skill_category, skill_name)
 VALUES
     (101, 201, 'ELECTRICAL', 'Wiring'),
     (102, 202, 'PLUMBING', 'Pipe Fitting'),
     (103, 203, 'CARPENTRY', 'Woodworking'),
     (104, 204, 'PHOTOGRAPHY', 'Event Photography');
+
