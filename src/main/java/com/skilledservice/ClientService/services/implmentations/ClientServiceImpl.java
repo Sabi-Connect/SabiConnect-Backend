@@ -93,10 +93,5 @@ public class ClientServiceImpl implements ClientService {
         return appointmentService.viewAllAppointment();
     }
 
-    @Override
-    public PostReviewResponse PostReview(PostReviewRequest postReviewRequest) {
-        return null;
-    }
-
 }
 
