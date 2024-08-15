@@ -1,8 +1,7 @@
 package com.skilledservice.ClientService.services.implmentations;
 
+import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
-import com.skilledservice.ClientService.dto.responses.CancelAppointmentResponse;
-import com.skilledservice.ClientService.dto.responses.DeleteAppointmentResponse;
 import com.skilledservice.ClientService.dto.responses.UpdateAppointmentResponse;
 import com.skilledservice.ClientService.dto.responses.ViewAllAppointmentsResponse;
 import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
@@ -14,8 +13,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +23,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private  final ModelMapper modelMapper;
 
     @Override
-    public Appointment bookAppointment(BigDecimal bookAppointmentRequest) {
+    public Appointment bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
         Appointment appointment = modelMapper.map(bookAppointmentRequest, Appointment.class);
         appointment.setStatus(AppointmentStatus.SCHEDULED);
         appointmentRepository.save(appointment);
@@ -36,21 +35,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
-    public CancelAppointmentResponse cancelAppointment(Long id) {
+    public void cancelAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found"));
         appointment.setStatus(AppointmentStatus.CANCELLED);
         appointmentRepository.save(appointment);
-        CancelAppointmentResponse response = new CancelAppointmentResponse();
-        modelMapper.map(response, Appointment.class);
-        response.setMessage("Appointment cancelled successfully");
-        return response;
+//        CancelAppointmentResponse response = new CancelAppointmentResponse();
+//        modelMapper.map(response, Appointment.class);
+//        response.setMessage("Appointment cancelled successfully");
+//        return response;
 
     }
 
     @Override
-    public UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request) {
-        Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
+    public UpdateAppointmentResponse updateAppointment(Long Id,UpdateAppointmentRequest request) {
+        Appointment appointment = appointmentRepository.findById(Id)
                 .orElseThrow(()-> new AppointmentNotFoundException("No appointment found"));
 
         modelMapper.map(request, Appointment.class);
@@ -64,21 +63,29 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public DeleteAppointmentResponse deleteAppointment(Long id) {
+    public void deleteAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(()-> new AppointmentNotFoundException("No appointment found"));
         appointmentRepository.delete(appointment);
-        return new DeleteAppointmentResponse("Appointment deleted successfully");
+
     }
 
     @Override
     public List<ViewAllAppointmentsResponse> viewAllAppointment() {
         var  appointments = appointmentRepository.findAll();
-        var response = List.of(modelMapper
-                .map(appointments, ViewAllAppointmentsResponse[].class));
 
-        return response;
+        return List.of(modelMapper
+                .map(appointments, ViewAllAppointmentsResponse[].class));
     }
+
+    @Override
+    public Optional<Appointment> findAppointmentById(Long id) {
+        return appointmentRepository.findById(id);
+
+    }
+
+
+
 
     @Override
     public void save(Appointment appointment) {

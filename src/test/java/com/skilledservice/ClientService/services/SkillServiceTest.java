@@ -20,7 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Sql(scripts = {"/db/data.sql"})
+//@Sql(scripts = {"/db/data.sql"})
 public class SkillServiceTest {
     @Autowired
     private SkilledWorkerService skilledWorkerService;
@@ -35,7 +35,6 @@ public class SkillServiceTest {
 
     @Test
     public void addSkillTest() {
-//        SkilledWorkerRegistrationResponse response = getSkilledWorkerRegistrationResponse();
 
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Fitzgerald");
@@ -44,12 +43,9 @@ public class SkillServiceTest {
         registrationRequest.setPassword("password");
         registrationRequest.setUsername("Fitz");
         registrationRequest.setPhoneNumber("1234567890");
-        Address address = new Address();
-        address.setHouseNumber("312");
-        address.setStreet("Herbert Macaulay Way");
-        address.setArea("Yaba");
-        address = addressRepository.save(address);
-//        registrationRequest.setAddress(address);
+        registrationRequest.setHouseNumber("312");
+        registrationRequest.setStreet("Herbert Macaulay Way");
+        registrationRequest.setArea("Yaba");
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
         assertThat(response.getSkilledWorkerId()).isNotNull();
@@ -67,29 +63,9 @@ public class SkillServiceTest {
         assertThat(skill.getSkilledWorker().getId()).isEqualTo(response.getSkilledWorkerId());
     }
 
-//    private SkilledWorkerRegistrationResponse getSkilledWorkerRegistrationResponse() {
-//        Address address = new Address();
-//        address.setHouseNumber("312");
-//        address.setStreet("Herbert Macaulay Way");
-//        address.setArea("Yaba");
-//
-//        RegistrationRequest registrationRequest = new RegistrationRequest();
-//        registrationRequest.setFirstName("Fitzgerald");
-//        registrationRequest.setLastName("McDonald");
-//        registrationRequest.setEmail("fitzgerald@gmail.com");
-//        registrationRequest.setPassword("password");
-//        registrationRequest.setPhoneNumber("1234567890");
-//        address = addressRepository.save(address);
-//        registrationRequest.setAddress(address);
-//        SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
-//        assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
-//        assertThat(response).isNotNull();
-//        return response;
-//    }
 
     @Test
     public void addMoreThatOneSkillTest() {
-//        SkilledWorkerRegistrationResponse response = getSkilledWorkerRegistrationResponse();
 
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Fitzgerald");
@@ -98,12 +74,9 @@ public class SkillServiceTest {
         registrationRequest.setUsername("Fitz");
         registrationRequest.setPassword("password");
         registrationRequest.setPhoneNumber("1234567890");
-        Address address = new Address();
-        address.setHouseNumber("312");
-        address.setStreet("Herbert Macaulay Way");
-        address.setArea("Yaba");
-        address = addressRepository.save(address);
-//        registrationRequest.setAddress(address);
+        registrationRequest.setHouseNumber("312");
+        registrationRequest.setStreet("Herbert Macaulay Way");
+        registrationRequest.setArea("Yaba");
         SkilledWorkerRegistrationResponse response = skilledWorkerService.registerSkilledWorker(registrationRequest);
         assertThat(skilledWorkerService.getNumberOfUsers()).isEqualTo(1L);
         assertThat(response).isNotNull();
@@ -127,7 +100,6 @@ public class SkillServiceTest {
         assertThat(skills.get(1).getSkillName()).isEqualTo("Carpenter");
         assertThat(skills.get(0).getSkillName()).isEqualTo("Electronics Electrician");
         assertThat(skills.get(1).getSkilledWorker().getId()).isEqualTo(response.getSkilledWorkerId());
-//        assertThat(skill.getSkilledWorker().getId()).isEqualTo(2L);
     }
 
     @Test
