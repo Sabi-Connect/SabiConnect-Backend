@@ -1,16 +1,13 @@
 package com.skilledservice.ClientService.services.implmentations;
 
 import com.skilledservice.ClientService.data.models.SkilledWorker;
-import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
-import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.DeleteAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
-import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
+import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.data.models.Appointment;
 import com.skilledservice.ClientService.data.constants.Role;
 import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
+import com.skilledservice.ClientService.data.repository.AppointmentRepository;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
 import com.skilledservice.ClientService.dto.responses.*;
 import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
@@ -134,13 +131,4 @@ public class ClientServiceImpl implements ClientService {
 
 
 }
-
-
-
-
-
-
-
-
-
 

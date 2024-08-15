@@ -11,6 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest
 @Sql(scripts = {"/db/data.sql"})
 public class SkilledWorkerServiceTest {
