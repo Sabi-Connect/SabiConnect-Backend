@@ -1,4 +1,4 @@
-package com.skilledservice.ClientService.services.implmentations;
+package com.skilledservice.ClientService.services.ServiceUtils;
 
 import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
