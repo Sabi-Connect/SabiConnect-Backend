@@ -1,4 +1,4 @@
-package com.skilledservice.ClientService.services;
+package com.skilledservice.ClientService.payment.services;
 
 import com.skilledservice.ClientService.dto.requests.PaymentRequest;
 import com.skilledservice.ClientService.dto.responses.PaymentResponse;
