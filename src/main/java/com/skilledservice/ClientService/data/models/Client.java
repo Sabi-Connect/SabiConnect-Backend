@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
@@ -42,6 +43,11 @@ public class Client {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
+    @OneToMany(mappedBy = "client",
+        cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+    private List<Appointment> appointment;
     @OneToOne
     private Address address;
 
