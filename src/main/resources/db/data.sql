@@ -41,8 +41,4 @@ insert into skilled_workers(id, first_name, last_name, username, phone_number, e
  (204, 'Michael', 'Dikandu', 'banksfc', '09101234567', 'banksfc@gmail.com', 10, '2024-07-28T18:55:06.333644100');
 
 
--- insert into appointment  (clients, schedule_time, skilled_workers, role, status)values
---     (2, '2024-08-10 10:00:00', , 'Electrician', 'Completed'),
---     (3, '2024-08-11 14:00:00', 3, 'Plumber', 'Pending'),
---     (4, '2024-08-12 09:00:00', 4, 'Carpenter', 'Cancelled'),
---     (5, '2024-08-13 16:00:00', 5, 'Painter', 'Completed');
+
