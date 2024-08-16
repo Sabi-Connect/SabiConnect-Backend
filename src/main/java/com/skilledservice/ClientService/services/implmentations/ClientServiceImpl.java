@@ -11,6 +11,7 @@ import com.skilledservice.ClientService.data.repository.AppointmentRepository;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
 import com.skilledservice.ClientService.dto.responses.*;
 import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
+import com.skilledservice.ClientService.exceptions.SabiConnectException;
 import com.skilledservice.ClientService.exceptions.UserNotFoundException;
 import com.skilledservice.ClientService.services.ServiceUtils.AppointmentService;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
@@ -33,7 +34,8 @@ public class ClientServiceImpl implements ClientService {
     private final SkilledWorkerService skilledWorkerService;
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
-    private final AppointmentService appointmentService;
+    private AppointmentService appointmentService;
+
 
     @Override
     public ClientRegistrationResponse registerClient(RegistrationRequest request) {
@@ -127,6 +129,11 @@ public class ClientServiceImpl implements ClientService {
 
 
         return appointmentService.viewAllAppointment();
+    }
+
+    @Override
+    public Client findById(Long clientId) {
+        return clientRepository.findById(clientId).orElseThrow(()-> new SabiConnectException("client not found"));
     }
 
 

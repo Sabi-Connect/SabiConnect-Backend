@@ -35,12 +35,12 @@ VALUES
 
 
 
-INSERT INTO reviews (client_id, review_date, skilled_worker_id, review)
+INSERT INTO reviews (client_id, id, review_date, skilled_worker_id, review)
 VALUES
-    (301, '2024-08-01', 201, 'Excellent work, very professional.'),
-    (302, '2024-08-02', 202, 'Good job, but could improve on punctuality.'),
-    (303, '2024-08-03', 203, 'Average service, met expectations.'),
-    (304, '2024-08-04', 204, 'Outstanding performance, highly recommended.');
+    (301, 101, '2024-08-01', 201, 'Excellent work, very professional.'),
+    (302, 102, '2024-08-02', 202, 'Good job, but could improve on punctuality.'),
+    (303, 103, '2024-08-03', 203, 'Average service, met expectations.'),
+    (304, 104, '2024-08-04', 204, 'Outstanding performance, highly recommended.');
 
 
 INSERT INTO appointments (clients_id, schedule_time, skilled_workers_id, status)
