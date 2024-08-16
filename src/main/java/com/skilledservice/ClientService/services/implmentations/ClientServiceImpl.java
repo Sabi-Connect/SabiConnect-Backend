@@ -17,6 +17,7 @@ import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerServi
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,12 @@ public class ClientServiceImpl implements ClientService {
     private final SkilledWorkerService skilledWorkerService;
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
-    private final AppointmentService appointmentService;
+    private AppointmentService appointmentService;
+
+    @Autowired
+    public void setAppointmentService(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
+    }
 
     @Override
     public ClientRegistrationResponse registerClient(RegistrationRequest request) {
@@ -157,6 +163,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client findById(Long clientId) {
         return clientRepository.findById(clientId).orElseThrow(()-> new SabiConnectException("client not found"));
+    }
+
+    @Override
+    public Long getNumberOfUsers() {
+        return clientRepository.count();
     }
 
 

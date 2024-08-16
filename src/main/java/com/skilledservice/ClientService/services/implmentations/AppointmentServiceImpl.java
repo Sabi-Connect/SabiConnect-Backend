@@ -1,6 +1,5 @@
 package com.skilledservice.ClientService.services.implmentations;
 
-import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.dto.requests.AcceptAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
@@ -13,8 +12,6 @@ import com.skilledservice.ClientService.data.constants.AppointmentStatus;
 import com.skilledservice.ClientService.data.repository.AppointmentRepository;
 import com.skilledservice.ClientService.exceptions.SabiConnectException;
 import com.skilledservice.ClientService.services.ServiceUtils.AppointmentService;
-import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
-import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -27,7 +24,12 @@ import java.util.Optional;
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private  final ModelMapper modelMapper;
-    private final ClientService clientService;
+
+
+//    @Autowired
+//    public void setClientService(ClientService clientService) {
+//        this.clientService = clientService;
+//    }
 
     @Override
     public Appointment bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
@@ -104,12 +106,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AcceptAppointmentResponse acceptAppointment(AcceptAppointmentRequest request) {
         Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
                 .orElseThrow(()-> new SabiConnectException("appointment not found"));
-        appointment.setClient(clientService.findById(request.getClientId()));
+//        appointment.setClient(clientService.findById(request.getClientId()));
+//        appointment.setSkilledWorker(request.getSkilledWorker());
         appointment.setStatus(AppointmentStatus.ACCEPTED);
         appointmentRepository.save(appointment);
         AcceptAppointmentResponse response = new AcceptAppointmentResponse();
         response.setStatus(request.getStatus());
-        response.setClientId(request.getClientId());
+        response.setClientId(request.getId());
         response.setAppointmentId(request.getAppointmentId());
         return response;
     }

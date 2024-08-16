@@ -22,4 +22,6 @@ public interface ClientService {
     List<ViewAllAppointmentsResponse> viewAllAppointment(Long id);
 
     Client findById(Long clientId);
+
+    Long getNumberOfUsers();
 }
