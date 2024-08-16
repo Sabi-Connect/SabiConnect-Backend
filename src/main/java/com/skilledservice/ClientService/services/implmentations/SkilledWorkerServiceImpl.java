@@ -1,22 +1,31 @@
 package com.skilledservice.ClientService.services.implmentations;
 
 import com.skilledservice.ClientService.data.models.Address;
+import com.skilledservice.ClientService.data.models.Appointment;
+import com.skilledservice.ClientService.dto.requests.AcceptAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
+import com.skilledservice.ClientService.dto.requests.LoginRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
+import com.skilledservice.ClientService.dto.responses.AcceptAppointmentResponse;
 import com.skilledservice.ClientService.dto.responses.AddSkillResponse;
+import com.skilledservice.ClientService.dto.responses.LoginResponse;
 import com.skilledservice.ClientService.dto.responses.SkilledWorkerRegistrationResponse;
 import com.skilledservice.ClientService.exceptions.InvalidEmailFoundException;
 import com.skilledservice.ClientService.exceptions.InvalidPasswordException;
 import com.skilledservice.ClientService.exceptions.SabiConnectException;
-import com.skilledservice.ClientService.data.constants.Role;
 import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
+import com.skilledservice.ClientService.services.ServiceUtils.AppointmentService;
 import com.skilledservice.ClientService.services.ServiceUtils.SkillService;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
+import com.skilledservice.ClientService.utils.JwtUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SkilledWorkerServiceImpl implements SkilledWorkerService {
@@ -25,14 +34,16 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     private final PasswordEncoder passwordEncoder;
     private final SkilledWorkerRepository skilledWorkerRepository;
     private final AddressServiceImpl addressService;
+    private final AppointmentService appointmentService;
 
     @Autowired
     @Lazy
-    public SkilledWorkerServiceImpl(SkillService skillService, PasswordEncoder passwordEncoder, SkilledWorkerRepository skilledWorkerRepository, AddressServiceImpl addressService) {
+    public SkilledWorkerServiceImpl(SkillService skillService, PasswordEncoder passwordEncoder, SkilledWorkerRepository skilledWorkerRepository, AddressServiceImpl addressService, AppointmentService appointmentService) {
         this.skillService = skillService;
         this.passwordEncoder = passwordEncoder;
         this.skilledWorkerRepository = skilledWorkerRepository;
         this.addressService = addressService;
+        this.appointmentService = appointmentService;
     }
 
     @Override
@@ -80,6 +91,16 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         return skilledWorkerRepository.findById(skilledWorkerId).orElseThrow(() -> new SabiConnectException("user not found"));
     }
 
+    @Override
+    public AcceptAppointmentResponse acceptAppointment(AcceptAppointmentRequest acceptAppointmentRequest) {
+        SkilledWorker skilledWorker = skilledWorkerRepository.findById(acceptAppointmentRequest.getId())
+                .orElseThrow(()-> new SabiConnectException("user not found"));
+        Appointment appointment = appointmentService.findAppointmentById(acceptAppointmentRequest.getId())
+                .orElseThrow(()-> new SabiConnectException("appointment not found"));
+        skilledWorker.getAppointment().add(appointment);
+        return appointmentService.acceptAppointment(acceptAppointmentRequest);
+    }
+
     private void validateEmail(String email) {
         if (!email.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             throw new InvalidEmailFoundException("Invalid Email");
@@ -96,6 +117,38 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
             throw new InvalidPasswordException("Password must contain at least one digit");
         }
     }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+        return checkLoginDetail(email, password);
+    }
+
+    private LoginResponse checkLoginDetail(String email, String password) {
+        Optional<SkilledWorker> optionalUser = skilledWorkerRepository.findByEmail(email);
+        if (optionalUser.isPresent()){
+            SkilledWorker skilledWorker = optionalUser.get();
+            if (skilledWorker.getPassword().equals(password)) {
+                return loginResponseMapper(skilledWorker);
+            } else {
+                throw new SabiConnectException("Invalid username or password");
+            }
+        } else {
+            throw new SabiConnectException("Invalid username or password");
+        }
+    }
+
+    private LoginResponse loginResponseMapper(SkilledWorker skilledWorker) {
+        LoginResponse loginResponse = new LoginResponse();
+        String accessToken = JwtUtils.generateAccessToken(skilledWorker.getId());
+        BeanUtils.copyProperties(skilledWorker, loginResponse);
+        loginResponse.setJwtToken(accessToken);
+        loginResponse.setMessage("Login Successful");
+
+        return loginResponse;
+    }
+
 
 }
 
