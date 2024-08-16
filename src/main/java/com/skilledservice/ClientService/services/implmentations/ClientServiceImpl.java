@@ -2,10 +2,7 @@ package com.skilledservice.ClientService.services.implmentations;
 
 import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
-import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.DeleteAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
-import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
+import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.data.models.Appointment;
 import com.skilledservice.ClientService.data.constants.Role;
@@ -92,9 +89,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public CancelAppointmentResponse cancelAppointment(Long id) {
+    @Transactional
+    public CancelAppointmentResponse cancelAppointment(Long id, CancelAppointmentRequest request){
+        Client client = clientRepository.findById(request.getId())
+                .orElseThrow(()->new UserNotFoundException("User not found"));
+        Optional<Appointment> appointment = Optional.ofNullable((appointmentService.findAppointmentById(id)
+                .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found"))));
+        appointmentService.cancelAppointment(appointment.get().getId());
+        client.getAppointment().remove(appointment.get());
+        clientRepository.save(client);
+
         CancelAppointmentResponse response = new CancelAppointmentResponse();
-       modelMapper.map(response, Appointment.class);
         response.setMessage("Appointment cancelled successfully");
         return response;
     }
