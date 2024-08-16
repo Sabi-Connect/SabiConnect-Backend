@@ -126,9 +126,9 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     }
 
     private LoginResponse checkLoginDetail(String email, String password) {
-        Optional<SkilledWorker> optionalUser = skilledWorkerRepository.findByEmail(email);
-        if (optionalUser.isPresent()){
-            SkilledWorker skilledWorker = optionalUser.get();
+        Optional<SkilledWorker> foundSkilledWorker = skilledWorkerRepository.findByEmail(email);
+        if (foundSkilledWorker.isPresent()){
+            SkilledWorker skilledWorker = foundSkilledWorker.get();
             if (skilledWorker.getPassword().equals(password)) {
                 return loginResponseMapper(skilledWorker);
             } else {
