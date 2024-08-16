@@ -55,6 +55,11 @@ public class ClientController {
                .body(new ApiResponse
                         (clientService.viewAllAppointment(clientId),true));
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        return ResponseEntity.status(CREATED)
+                .body(new ApiResponse(clientService.login(loginRequest),true));
+    }
 
 
 

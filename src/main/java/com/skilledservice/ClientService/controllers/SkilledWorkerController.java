@@ -1,6 +1,7 @@
 package com.skilledservice.ClientService.controllers;
 
 import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
+import com.skilledservice.ClientService.dto.requests.LoginRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.responses.ApiResponse;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
@@ -33,5 +34,10 @@ public class SkilledWorkerController {
     @GetMapping("/findById")
     public ResponseEntity<?> findById(@RequestParam Long skilledWorkerId) {
         return ResponseEntity.ok(skilledWorkerService.findById(skilledWorkerId));
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.status(CREATED)
+                .body(new ApiResponse(skilledWorkerService.login(loginRequest), true));
     }
 }
