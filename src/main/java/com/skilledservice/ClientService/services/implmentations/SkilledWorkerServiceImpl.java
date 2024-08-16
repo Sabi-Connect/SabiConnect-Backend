@@ -5,6 +5,8 @@ import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.responses.AddSkillResponse;
 import com.skilledservice.ClientService.dto.responses.SkilledWorkerRegistrationResponse;
+import com.skilledservice.ClientService.exceptions.InvalidEmailFoundException;
+import com.skilledservice.ClientService.exceptions.InvalidPasswordException;
 import com.skilledservice.ClientService.exceptions.SabiConnectException;
 import com.skilledservice.ClientService.data.constants.Role;
 import com.skilledservice.ClientService.data.models.SkilledWorker;
@@ -40,6 +42,8 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     @Override
     public SkilledWorkerRegistrationResponse registerSkilledWorker(RegistrationRequest registrationRequest) {
+        validateEmail(registrationRequest.getEmail());
+        validatePassword(registrationRequest.getPassword());
 
         SkilledWorker skilledWorker = new SkilledWorker();
         skilledWorker.setFirstName(registrationRequest.getFirstName());
@@ -76,5 +80,22 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         return skilledWorkerRepository.findById(skilledWorkerId).orElseThrow(() -> new SabiConnectException("user not found"));
     }
 
+    private void validateEmail(String email) {
+        if (!email.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new InvalidEmailFoundException("Invalid Email");
+        }
+    }
+    private static  void validatePassword(String password){
+        if (password.length() < 8) {
+            throw new InvalidPasswordException("Password does not meet complexity requirements");
+        }
+        if (!password.matches("[a-zA-Z0-9]*")) {
+            throw new InvalidPasswordException("Password must be alphanumeric");
+        }
+        if (!password.matches(".*\\d.*")) {
+            throw new InvalidPasswordException("Password must contain at least one digit");
+        }
+    }
 
 }
+

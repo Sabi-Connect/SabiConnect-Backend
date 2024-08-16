@@ -1,7 +1,7 @@
 package com.skilledservice.ClientService.handler;
 
-import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
-import com.skilledservice.ClientService.exceptions.UserNotFoundException;
+import com.skilledservice.ClientService.exceptions.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,4 +27,32 @@ public class GlobalExceptionHandler {
                         "success", false));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGlobalException(Exception exception){
+        return ResponseEntity.status(BAD_REQUEST)
+               .body(Map.of(
+                        "error", exception.getMessage(),
+                        "success", false));
+    }
+    @ExceptionHandler(SabiConnectException.class)
+    public ResponseEntity<?> handleSabiConnectException(SabiConnectException exception){
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(Map.of(
+                        "error", exception.getMessage(),
+                        "success", false));
+
+    }
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<?>handleInvalidPasswordException(@NotNull InvalidPasswordException exception){
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(Map.of("error", exception.getMessage(),
+                        "success", false));
+    }
+
+    @ExceptionHandler(InvalidEmailFoundException.class)
+    public ResponseEntity<?>handleInvalidEmailFoundException(InvalidEmailFoundException exception){
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(Map.of("error", exception.getMessage(),
+                        "success", false));
+    }
 }

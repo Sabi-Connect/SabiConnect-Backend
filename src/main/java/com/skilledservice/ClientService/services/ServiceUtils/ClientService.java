@@ -9,17 +9,17 @@ import java.util.List;
 public interface ClientService {
 
     ClientRegistrationResponse registerClient(RegistrationRequest registerRequest);
-    Long getNumberOfUsers();
+
 
     BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest);
 
-    CancelAppointmentResponse cancelAppointment(Long id);
+    CancelAppointmentResponse cancelAppointment(Long id, CancelAppointmentRequest cancelAppointmentRequest);
 
     UpdateAppointmentResponse updateAppointment(Long Id,UpdateAppointmentRequest request);
 
     DeleteAppointmentResponse deleteAppointment(Long id, DeleteAppointmentRequest request);
 
-    List<ViewAllAppointmentsResponse> viewAllAppointment();
+    List<ViewAllAppointmentsResponse> viewAllAppointment(Long id);
 
     Client findById(Long clientId);
 }
