@@ -29,8 +29,6 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     @Autowired
     @Lazy
     public SkilledWorkerServiceImpl(SkillService skillService, PasswordEncoder passwordEncoder, SkilledWorkerRepository skilledWorkerRepository, AddressServiceImpl addressService) {
-//        this.mapper = mapper;
-//        this.userRepository = userRepository;
         this.skillService = skillService;
         this.passwordEncoder = passwordEncoder;
         this.skilledWorkerRepository = skilledWorkerRepository;

@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.services.ServiceUtils;
 
+import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.dto.responses.*;
 
@@ -20,4 +21,5 @@ public interface ClientService {
 
     List<ViewAllAppointmentsResponse> viewAllAppointment(Long id);
 
+    Client findById(Long clientId);
 }

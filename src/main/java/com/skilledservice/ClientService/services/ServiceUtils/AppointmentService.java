@@ -1,7 +1,9 @@
 package com.skilledservice.ClientService.services.ServiceUtils;
 
+import com.skilledservice.ClientService.dto.requests.AcceptAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
 import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
+import com.skilledservice.ClientService.dto.responses.AcceptAppointmentResponse;
 import com.skilledservice.ClientService.dto.responses.UpdateAppointmentResponse;
 import com.skilledservice.ClientService.dto.responses.ViewAllAppointmentsResponse;
 import com.skilledservice.ClientService.data.models.Appointment;
@@ -19,4 +21,8 @@ public interface AppointmentService {
     Optional<Appointment> findAppointmentById(Long id);
 
     void save(Appointment appointment);
+
+    AcceptAppointmentResponse acceptAppointment(AcceptAppointmentRequest request);
+
+    Long getAppointments();
 }

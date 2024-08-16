@@ -10,10 +10,7 @@ import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
 import com.skilledservice.ClientService.dto.responses.*;
-import com.skilledservice.ClientService.exceptions.AppointmentNotFoundException;
-import com.skilledservice.ClientService.exceptions.InvalidEmailFoundException;
-import com.skilledservice.ClientService.exceptions.InvalidPasswordException;
-import com.skilledservice.ClientService.exceptions.UserNotFoundException;
+import com.skilledservice.ClientService.exceptions.*;
 import com.skilledservice.ClientService.services.ServiceUtils.AppointmentService;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
@@ -47,6 +44,7 @@ public class ClientServiceImpl implements ClientService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setUsername(request.getUsername());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -154,6 +152,11 @@ public class ClientServiceImpl implements ClientService {
         if (!password.matches(".*\\d.*")) {
             throw new InvalidPasswordException("Password must contain at least one digit");
         }
+    }
+
+    @Override
+    public Client findById(Long clientId) {
+        return clientRepository.findById(clientId).orElseThrow(()-> new SabiConnectException("client not found"));
     }
 
 
