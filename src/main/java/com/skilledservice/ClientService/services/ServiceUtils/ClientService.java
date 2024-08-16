@@ -24,4 +24,6 @@ public interface ClientService {
     Client findById(Long clientId);
 
     Long getNumberOfUsers();
+
+    LoginResponse login(LoginRequest loginRequest);
 }

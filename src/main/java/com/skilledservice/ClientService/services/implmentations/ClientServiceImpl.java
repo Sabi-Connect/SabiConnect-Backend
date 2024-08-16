@@ -1,11 +1,9 @@
 package com.skilledservice.ClientService.services.implmentations;
 
 import com.skilledservice.ClientService.data.models.SkilledWorker;
-import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
 import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.data.models.Appointment;
-import com.skilledservice.ClientService.data.constants.Role;
 import com.skilledservice.ClientService.data.models.Client;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
 import com.skilledservice.ClientService.data.repository.ClientRepository;
@@ -14,9 +12,11 @@ import com.skilledservice.ClientService.exceptions.*;
 import com.skilledservice.ClientService.services.ServiceUtils.AppointmentService;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
+import com.skilledservice.ClientService.utils.JwtUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -169,6 +169,38 @@ public class ClientServiceImpl implements ClientService {
     public Long getNumberOfUsers() {
         return clientRepository.count();
     }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+        return checkLoginDetail(email, password);
+    }
+
+    private LoginResponse checkLoginDetail(String email, String password) {
+        Optional<Client> foundClient = clientRepository.findByEmail(email);
+        if (foundClient.isPresent()){
+            Client client = foundClient.get();
+            if (client.getPassword().equals(password)) {
+                return loginResponseMapper(client);
+            } else {
+                throw new SabiConnectException("Invalid username or password");
+            }
+        } else {
+            throw new SabiConnectException("Invalid username or password");
+        }
+    }
+
+    private LoginResponse loginResponseMapper(Client client) {
+        LoginResponse loginResponse = new LoginResponse();
+        String accessToken = JwtUtils.generateAccessToken(client.getId());
+        BeanUtils.copyProperties(client, loginResponse);
+        loginResponse.setJwtToken(accessToken);
+        loginResponse.setMessage("Login Successful");
+
+        return loginResponse;
+    }
+
 
 
 }
