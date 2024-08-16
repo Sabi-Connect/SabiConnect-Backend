@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CancelAppointmentRequest {
-    private Long appointmentId;
+    private Long id;
     private Category category;
     private AppointmentStatus status;
 
