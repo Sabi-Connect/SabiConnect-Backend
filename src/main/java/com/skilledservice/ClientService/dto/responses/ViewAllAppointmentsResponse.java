@@ -2,6 +2,7 @@ package com.skilledservice.ClientService.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.skilledservice.ClientService.data.constants.Category;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,9 +15,8 @@ public class ViewAllAppointmentsResponse {
     @JsonProperty("appointments_id")
     Long Id;
     @JsonFormat(pattern = "dd-MMMM-yyyy 'at' hh:mm a")
-    private LocalDateTime startTime;
-    @JsonFormat(pattern = "dd-MMMM-yyyy 'at' hh:mm a")
-    private LocalDateTime endTime;
+    private LocalDateTime scheduleTime;
+    private Category category;
     private BigDecimal amount;
 
 }
