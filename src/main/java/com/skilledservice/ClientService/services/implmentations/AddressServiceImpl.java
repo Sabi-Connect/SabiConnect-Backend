@@ -3,8 +3,8 @@ package com.skilledservice.ClientService.services.implmentations;
 import com.skilledservice.ClientService.data.models.Address;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
+import com.skilledservice.ClientService.services.ServiceUtils.AddressService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

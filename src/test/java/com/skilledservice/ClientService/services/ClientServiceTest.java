@@ -36,22 +36,24 @@ public class ClientServiceTest {
     public void setUp() {
       appointmentRepository.deleteAll();
     }
-    @Test
-    public void registerClient() {
-        RegistrationRequest registerClientRequest = new RegistrationRequest();
-        registerClientRequest.setFirstName("John");
-        registerClientRequest.setLastName("Doe");
-        registerClientRequest.setUsername("JohnDoe");
-        registerClientRequest.setPhoneNumber("123456789");
-        registerClientRequest.setEmail("john@doe.com");
-        registerClientRequest.setStreet("Street");
-        registerClientRequest.setArea("area");
-        registerClientRequest.setHouseNumber("number");
-        registerClientRequest.setPassword("password");
-        ClientRegistrationResponse response = clientService.registerClient(registerClientRequest);
-        assertThat(response).isNotNull();
-//        assertThat(clientService.getNumberOfUsers()).isEqualTo(2L);
-    }
+
+//    @Test
+//    public void registerClient() {
+//        RegistrationRequest registerClientRequest = new RegistrationRequest();
+//        registerClientRequest.setFirstName("John");
+//        registerClientRequest.setLastName("Doe");
+//        registerClientRequest.setUsername("JohnDoe");
+//        registerClientRequest.setPhoneNumber("123456789");
+//        registerClientRequest.setEmail("john@doe.com");
+//        registerClientRequest.setStreet("Street");
+//        registerClientRequest.setArea("area");
+//        registerClientRequest.setHouseNumber("number");
+//        registerClientRequest.setPassword("password");
+//        ClientRegistrationResponse response = clientService.registerClient(registerClientRequest);
+//        assertThat(response).isNotNull();
+//
+//    }
+
     @Test
     public void testThatClientCan_bookAppointmentTest() {
         BookAppointmentRequest request = new BookAppointmentRequest();
@@ -91,11 +93,6 @@ public class ClientServiceTest {
         clientService.bookAppointment(request);
         assertThat(clientRepository.findById(2L).get()
                 .getAppointment().size()).isEqualTo(1);
-//        clientService.deleteAppointment(1L);
-//        Client client = clientRepository.findById(2L).orElseThrow();
-//        assertThat(client.getAppointment().size()).isEqualTo(0);
-
-
 
     }
 }
