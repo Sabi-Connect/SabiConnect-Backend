@@ -6,13 +6,11 @@ import com.skilledservice.ClientService.dto.responses.ApiResponse;
 import com.skilledservice.ClientService.services.ServiceUtils.MailService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+@CrossOrigin(origins = "https://sabiconnect.vercel.app/")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/mail")
