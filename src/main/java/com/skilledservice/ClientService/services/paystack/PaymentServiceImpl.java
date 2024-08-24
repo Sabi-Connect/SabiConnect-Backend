@@ -7,6 +7,7 @@ import com.skilledservice.ClientService.payment.responses.PayStackData;
 import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
 import okhttp3.*;
 import org.cloudinary.json.JSONObject;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,25 +28,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponse makePayment(PaymentRequest paymentRequest) {
         String authorization = "Bearer " + appConfig.getPayStackSecretKey();
-        String payStackUrl = appConfig.getPayStackInitiatePayment();
+        String payStackUrl = appConfig.getPayStackInitiatePaymentUrl();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", authorization);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<PaymentRequest> request = new HttpEntity<>(paymentRequest, headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<PaymentResponse> response = restTemplate.postForEntity(payStackUrl, request, PaymentResponse.class);
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            System.err.println("HTTP Error: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
-            throw e;
-            } catch (Exception e) {
-            System.err.println("Error making payment request: " + e.getMessage());
-            throw new RuntimeException("Failed to make payment request", e);
-        }
+        return getPaymentResponse(paymentRequest, headers, payStackUrl);
     }
 
     @Override
@@ -57,26 +46,9 @@ public class PaymentServiceImpl implements PaymentService {
                .build();
         System.out.println(appConfig.getPayStackVerifyPaymentUrl());
 
-        Request request = new Request.Builder()
-                .url(appConfig.getPayStackVerifyPaymentUrl())
-                .header("Authorization", "Bearer " + appConfig.getPayStackSecretKey())
-                .post(requestBody)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                assert response.body() != null;
-                throw new Exception("PayStack request failed: " + response.body().string());
-            }
-            assert  response.body() != null;
-
-            String jsonResponse = response.body().string();
-            return convertStringToJsonObject(jsonResponse);
-        }catch(Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error occurred while initiating payment request --> " + e.getMessage());
-        }
+        return getResponseBodyDetails(requestBody, client);
     }
+
 
     private ResponseBodyDetails<?> convertStringToJsonObject(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -113,5 +85,43 @@ public class PaymentServiceImpl implements PaymentService {
             throw new RuntimeException("Error while initiating payment request --> " + e.getMessage());
         }
 
+    }
+
+    private ResponseBodyDetails<?> getResponseBodyDetails(RequestBody requestBody, OkHttpClient client) {
+        Request request = new Request.Builder()
+                .url(appConfig.getPayStackVerifyPaymentUrl())
+                .header("Authorization", "Bearer " + appConfig.getPayStackSecretKey())
+                .post(requestBody)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                assert response.body() != null;
+                throw new Exception("PayStack request failed: " + response.body().string());
+            }
+            assert  response.body() != null;
+
+            String jsonResponse = response.body().string();
+            return convertStringToJsonObject(jsonResponse);
+        }catch(Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error occurred while initiating payment request --> " + e.getMessage());
+        }
+    }
+
+    private static @Nullable PaymentResponse getPaymentResponse(PaymentRequest paymentRequest, HttpHeaders headers, String payStackUrl) {
+        HttpEntity<PaymentRequest> request = new HttpEntity<>(paymentRequest, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<PaymentResponse> response = restTemplate.postForEntity(payStackUrl, request, PaymentResponse.class);
+            return response.getBody();
+        } catch (HttpClientErrorException e) {
+            System.err.println("HTTP Error: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
+            throw e;
+        } catch (Exception e) {
+            System.err.println("Error making payment request: " + e.getMessage());
+            throw new RuntimeException("Failed to make payment request", e);
+        }
     }
 }
