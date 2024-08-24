@@ -1,4 +1,4 @@
-//package com.skilledservice.ClientService.payment.services;
+package com.skilledservice.ClientService.payment.services;
 
 //import com.google.gson.JsonObject;
 //import com.skilledservice.ClientService.config.AppConfig;
@@ -95,108 +95,108 @@
 
 
 
-//import com.skilledservice.ClientService.config.AppConfig;
-//import com.skilledservice.ClientService.payment.requests.PaymentRequest;
-//import com.skilledservice.ClientService.dto.responses.PaymentResponse;
-//import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
-//import com.skilledservice.ClientService.services.paystack.PaymentServiceImpl;
-//import okhttp3.*;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.client.RestTemplate;
-//
-//import java.math.BigDecimal;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//@SpringBootTest
-//public class PaymentServiceImplTest {
-//
-//    @Mock
-//    private AppConfig appConfig;
-//
-//    @Mock
-//    private RestTemplate restTemplate;
-//
-//    @InjectMocks
-//    private PaymentServiceImpl paymentService;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//    }
-//
-//    @Test
-//    public void testMakePayment() {
-//        PaymentRequest paymentRequest = new PaymentRequest();
-//        paymentRequest.setAmount(BigDecimal.valueOf(1000));
-//        paymentRequest.setEmail("test@example.com");
-//
-//        String payStackUrl = "https://api.paystack.co/charge";
-//        when(appConfig.getPayStackInitiatePaymentUrl()).thenReturn(payStackUrl);
-//
-//        PaymentResponse expectedResponse = new PaymentResponse();
-//        when(restTemplate.postForEntity(eq(payStackUrl), any(), eq(PaymentResponse.class)))
-//                .thenReturn(ResponseEntity.ok(expectedResponse));
-//
-//        PaymentResponse actualResponse = paymentService.makePayment(paymentRequest);
-//
-//        assertEquals(expectedResponse, actualResponse);
-//    }
-//
-//    @Test
-//    public void testInitiatePayment() throws Exception {
-//        PaymentRequest paymentRequest = new PaymentRequest();
-//        paymentRequest.setAmount(BigDecimal.valueOf(1000));
-//        paymentRequest.setEmail("test@example.com");
-//
-//        OkHttpClient client = mock(OkHttpClient.class);
-//        Response response = mock(Response.class);
-//        when(response.isSuccessful()).thenReturn(true);
-//        when(response.body()).thenReturn(ResponseBody.create(
-//                "{\"status\": true, \"message\": \"Success\", \"data\": {\"authorization_url\": \"url\", \"access_code\": \"code\", \"reference\": \"ref\"}}",
-//                MediaType.parse("application/json")
-//        ));
-//        when(client.newCall(any(Request.class))).thenReturn(mock(Call.class));
-//        when(client.newCall(any(Request.class)).execute()).thenReturn(response);
-//
-//        when(appConfig.getPayStackVerifyPaymentUrl()).thenReturn("https://api.paystack.co/verify/");
-//        when(appConfig.getPayStackSecretKey()).thenReturn("secretKey");
-//
-//        ResponseBodyDetails<?> result = paymentService.initiatePayment(paymentRequest);
-//
-//        assertNotNull(result);
-//        assertTrue(result.getStatus().equals("200"));
-//        assertEquals("Success", result.getMessage());
-//    }
-//
-//    @Test
-//    public void testVerifyPayment() throws Exception {
-//        String reference = "test_reference";
-//
-//        OkHttpClient client = mock(OkHttpClient.class);
-//        Response response = mock(Response.class);
-//        when(response.isSuccessful()).thenReturn(true);
-//        when(response.body()).thenReturn(ResponseBody.create(
-//                "{\"status\": true, \"message\": \"Verified\", \"data\": {}}",
-//                MediaType.parse("application/json")
-//        ));
-//        when(client.newCall(any(Request.class))).thenReturn(mock(Call.class));
-//        when(client.newCall(any(Request.class)).execute()).thenReturn(response);
-//
-//        when(appConfig.getPayStackVerifyPaymentUrl()).thenReturn("https://api.paystack.co/verify/");
-//        when(appConfig.getPayStackSecretKey()).thenReturn("secretKey");
-//
-//        ResponseBodyDetails<?> result = paymentService.verifyPayment(reference);
-//
-//        assertNotNull(result);
-//        assertEquals("Verified", result.getMessage());
-//    }
-//}
+import com.skilledservice.ClientService.config.AppConfig;
+import com.skilledservice.ClientService.payment.requests.PaymentRequest;
+import com.skilledservice.ClientService.dto.responses.PaymentResponse;
+import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
+import com.skilledservice.ClientService.services.paystack.PaymentServiceImpl;
+import okhttp3.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@SpringBootTest
+public class PaymentServiceImplTest {
+
+    @Mock
+    private AppConfig appConfig;
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @InjectMocks
+    private PaymentServiceImpl paymentService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testMakePayment() {
+        PaymentRequest paymentRequest = new PaymentRequest();
+        paymentRequest.setAmount(BigDecimal.valueOf(1000));
+        paymentRequest.setEmail("test@example.com");
+
+        String payStackUrl = "https://api.paystack.co/charge";
+        when(appConfig.getPayStackInitiatePaymentUrl()).thenReturn(payStackUrl);
+
+        PaymentResponse expectedResponse = new PaymentResponse();
+        when(restTemplate.postForEntity(eq(payStackUrl), any(), eq(PaymentResponse.class)))
+                .thenReturn(ResponseEntity.ok(expectedResponse));
+
+        PaymentResponse actualResponse = paymentService.makePayment(paymentRequest);
+
+        assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void testInitiatePayment() throws Exception {
+        PaymentRequest paymentRequest = new PaymentRequest();
+        paymentRequest.setAmount(BigDecimal.valueOf(1000));
+        paymentRequest.setEmail("test@example.com");
+
+        OkHttpClient client = mock(OkHttpClient.class);
+        Response response = mock(Response.class);
+        when(response.isSuccessful()).thenReturn(true);
+        when(response.body()).thenReturn(ResponseBody.create(
+                "{\"status\": true, \"message\": \"Success\", \"data\": {\"authorization_url\": \"url\", \"access_code\": \"code\", \"reference\": \"ref\"}}",
+                MediaType.parse("application/json")
+        ));
+        when(client.newCall(any(Request.class))).thenReturn(mock(Call.class));
+        when(client.newCall(any(Request.class)).execute()).thenReturn(response);
+
+        when(appConfig.getPayStackVerifyPaymentUrl()).thenReturn("https://api.paystack.co/verify/");
+        when(appConfig.getPayStackSecretKey()).thenReturn("secretKey");
+
+        ResponseBodyDetails<?> result = paymentService.initiatePayment(paymentRequest);
+
+        assertNotNull(result);
+        assertTrue(result.getStatus().equals("200"));
+        assertEquals("Success", result.getMessage());
+    }
+
+    @Test
+    public void testVerifyPayment() throws Exception {
+        String reference = "test_reference";
+
+        OkHttpClient client = mock(OkHttpClient.class);
+        Response response = mock(Response.class);
+        when(response.isSuccessful()).thenReturn(true);
+        when(response.body()).thenReturn(ResponseBody.create(
+                "{\"status\": true, \"message\": \"Verified\", \"data\": {}}",
+                MediaType.parse("application/json")
+        ));
+        when(client.newCall(any(Request.class))).thenReturn(mock(Call.class));
+        when(client.newCall(any(Request.class)).execute()).thenReturn(response);
+
+        when(appConfig.getPayStackVerifyPaymentUrl()).thenReturn("https://api.paystack.co/verify/");
+        when(appConfig.getPayStackSecretKey()).thenReturn("secretKey");
+
+        ResponseBodyDetails<?> result = paymentService.verifyPayment(reference);
+
+        assertNotNull(result);
+        assertEquals("Verified", result.getMessage());
+    }
+}
 
