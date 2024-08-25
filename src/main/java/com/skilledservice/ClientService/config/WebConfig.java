@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Allow CORS on all endpoints
-                .allowedOrigins("http://localhost:3000") // Allow only your frontend to access the server
+                .allowedOrigins("http://localhost:3000","http://localhost:3001", "https://sabiconnect.vercel.app") // Allow only your frontend to access the server
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true) // If you need to send cookies or other credentials
