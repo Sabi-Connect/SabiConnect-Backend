@@ -3,6 +3,7 @@ package com.skilledservice.ClientService.controllers;
 import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
 import com.skilledservice.ClientService.dto.requests.LoginRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
+import com.skilledservice.ClientService.dto.requests.UpdateSkilledWorkerRequest;
 import com.skilledservice.ClientService.dto.responses.ApiResponse;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,12 @@ public class SkilledWorkerController {
     public ResponseEntity<?> findById(@RequestParam Long skilledWorkerId) {
         return ResponseEntity.ok(skilledWorkerService.findById(skilledWorkerId));
     }
+    @PutMapping("/updateProfile")
+    public ResponseEntity<?> updateSkilledWorkerProfile(@RequestBody UpdateSkilledWorkerRequest request) {
+        return ResponseEntity
+                .ok(new ApiResponse(skilledWorkerService.updateSkilledWorkerProfile(request), true));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.status(CREATED)

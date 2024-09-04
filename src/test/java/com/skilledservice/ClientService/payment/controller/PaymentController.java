@@ -1,6 +1,6 @@
 package com.skilledservice.ClientService.payment.controller;
 
-import com.skilledservice.ClientService.dto.responses.PaymentResponse;
+import com.skilledservice.ClientService.payment.responses.PaymentResponse;
 import com.skilledservice.ClientService.payment.requests.PaymentRequest;
 import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
 import com.skilledservice.ClientService.services.paystack.PaymentService;

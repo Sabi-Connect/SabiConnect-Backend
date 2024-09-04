@@ -1,4 +1,4 @@
-package com.skilledservice.ClientService.dto.requests;
+package com.skilledservice.ClientService.payment.requests;
 
 import lombok.Getter;
 import lombok.Setter;

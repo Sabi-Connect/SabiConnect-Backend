@@ -1,4 +1,4 @@
-package com.skilledservice.ClientService.dto.responses;
+package com.skilledservice.ClientService.payment.responses;
 
 import com.skilledservice.ClientService.data.models.Data;
 import lombok.Getter;
