@@ -2,7 +2,7 @@ package com.skilledservice.ClientService.services.paystack;
 
 import com.skilledservice.ClientService.config.AppConfig;
 import com.skilledservice.ClientService.payment.requests.PaymentRequest;
-import com.skilledservice.ClientService.dto.responses.PaymentResponse;
+import com.skilledservice.ClientService.payment.responses.PaymentResponse;
 import com.skilledservice.ClientService.payment.responses.PayStackData;
 import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
 import okhttp3.*;

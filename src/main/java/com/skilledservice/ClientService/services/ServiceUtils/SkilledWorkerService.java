@@ -16,4 +16,6 @@ public interface SkilledWorkerService {
     AcceptAppointmentResponse acceptAppointment(AcceptAppointmentRequest acceptAppointmentRequest);
 
     LoginResponse login(LoginRequest loginRequest);
+
+    UpdateSkilledWorkerResponse updateSkilledWorkerProfile(UpdateSkilledWorkerRequest request);
 }

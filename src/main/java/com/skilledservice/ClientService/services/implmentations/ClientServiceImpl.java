@@ -47,16 +47,9 @@ public class ClientServiceImpl implements ClientService {
         validatePassword(request.getPassword());
 
         Client user = new Client();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
+        user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setUsername(request.getUsername());
-        user.setPhoneNumber(request.getPhoneNumber());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        Address address = new Address();
-        address = addressRepository.save(address);
-        user.setAddress(address);
         user = clientRepository.save(user);
 
         ClientRegistrationResponse response = new ClientRegistrationResponse();
@@ -150,7 +143,7 @@ public class ClientServiceImpl implements ClientService {
     }
     private static  void validatePassword(String password){
         if (password.length() < 8) {
-            throw new InvalidPasswordException("Password does not meet complexity requirements");
+            throw new InvalidPasswordException("Password must contain at least 8 characters");
         }
         if (!password.matches("[a-zA-Z0-9]*")) {
             throw new InvalidPasswordException("Password must be alphanumeric");
@@ -201,6 +194,34 @@ public class ClientServiceImpl implements ClientService {
         return loginResponse;
     }
 
+    @Override
+    public UpdateClientResponse updateClientProfile(UpdateClientRequest updateRequest) {
+        if (updateRequest.getClientId() == null) throw new UserNotFoundException("client ID must not be null");
+
+        Client foundClient = clientRepository.findById(updateRequest.getClientId())
+                .orElseThrow(()-> new UserNotFoundException("User not found"));
+
+        foundClient.setPassword(updateRequest.getPassword());
+        foundClient.setUsername(updateRequest.getUsername());
+        foundClient.setPhoneNumber(updateRequest.getPhoneNumber());
+        Address address = new Address();
+        address.setHouseNumber(updateRequest.getHouseNumber());
+        address.setStreet(updateRequest.getStreet());
+        address.setArea(updateRequest.getArea());
+        foundClient.setAddress(address);
+        addressRepository.save(address);
+
+        UpdateClientResponse response = new UpdateClientResponse();
+        response.setClientId(updateRequest.getClientId());
+        response.setUsername(updateRequest.getUsername());
+        response.setPassword(updateRequest.getPassword());
+        response.setPassword(updateRequest.getPassword());
+        response.setHouseNumber(updateRequest.getHouseNumber());
+        response.setStreet(updateRequest.getStreet());
+        response.setArea(updateRequest.getArea());
+
+        return response;
+    }
 
 
 }

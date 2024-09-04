@@ -3,7 +3,7 @@ package com.skilledservice.ClientService.payment.services;
 //import com.google.gson.JsonObject;
 //import com.skilledservice.ClientService.config.AppConfig;
 //import com.skilledservice.ClientService.payment.requests.PaymentRequest;
-//import com.skilledservice.ClientService.dto.responses.PaymentResponse;
+//import com.skilledservice.ClientService.payment.responses.PaymentResponse;
 //import com.skilledservice.ClientService.payment.responses.PayStackData;
 //import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
 //import com.skilledservice.ClientService.services.paystack.PaymentService;
@@ -97,7 +97,7 @@ package com.skilledservice.ClientService.payment.services;
 
 import com.skilledservice.ClientService.config.AppConfig;
 import com.skilledservice.ClientService.payment.requests.PaymentRequest;
-import com.skilledservice.ClientService.dto.responses.PaymentResponse;
+import com.skilledservice.ClientService.payment.responses.PaymentResponse;
 import com.skilledservice.ClientService.payment.responses.ResponseBodyDetails;
 import com.skilledservice.ClientService.services.paystack.PaymentServiceImpl;
 import okhttp3.*;

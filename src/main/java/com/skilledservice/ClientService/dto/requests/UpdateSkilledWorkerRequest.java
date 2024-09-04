@@ -7,12 +7,13 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UpdateSkilledWorkerRequest {
-    private String skilledWorkerId;
-    private String firstName;
-    private String lastName;
+    private Long skilledWorkerId;
+    private String fullName;
     private String username;
-    private String phoneNumber;
     private String email;
-    private Address address;
+    private String phoneNumber;
     private String password;
+    private String houseNumber;
+    private String street;
+    private String area;
 }
