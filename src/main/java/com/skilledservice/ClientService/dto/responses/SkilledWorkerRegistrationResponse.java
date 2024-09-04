@@ -8,9 +8,6 @@ import lombok.Setter;
 @Getter
 public class SkilledWorkerRegistrationResponse {
     private Long skilledWorkerId;
-    private String fullName;
-    private String email;
-    private String password;
     private String message;
 
 }
