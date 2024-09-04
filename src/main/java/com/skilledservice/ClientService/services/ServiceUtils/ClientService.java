@@ -1,9 +1,7 @@
 package com.skilledservice.ClientService.services.ServiceUtils;
 
-import com.skilledservice.ClientService.dto.requests.BookAppointmentRequest;
-import com.skilledservice.ClientService.dto.requests.PostReviewRequest;
-import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
-import com.skilledservice.ClientService.dto.requests.UpdateAppointmentRequest;
+import com.skilledservice.ClientService.data.models.Client;
+import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.dto.responses.*;
 
 import java.util.List;
@@ -11,16 +9,23 @@ import java.util.List;
 public interface ClientService {
 
     ClientRegistrationResponse registerClient(RegistrationRequest registerRequest);
-    Long getNumberOfUsers();
+
 
     BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest);
 
-    CancelAppointmentResponse cancelAppointment(Long id);
+    CancelAppointmentResponse cancelAppointment(Long id, CancelAppointmentRequest cancelAppointmentRequest);
 
-    UpdateAppointmentResponse updateAppointment(UpdateAppointmentRequest request);
+    UpdateAppointmentResponse updateAppointment(Long Id,UpdateAppointmentRequest request);
 
-    DeleteAppointmentResponse deleteAppointment(Long id);
+    DeleteAppointmentResponse deleteAppointment(Long id, DeleteAppointmentRequest request);
 
-    List<ViewAllAppointmentsResponse> viewAllAppointment();
+    List<ViewAllAppointmentsResponse> viewAllAppointment(Long id);
 
+    Client findById(Long clientId);
+
+    Long getNumberOfUsers();
+
+    LoginResponse login(LoginRequest loginRequest);
+
+    UpdateClientResponse updateClientProfile(UpdateClientRequest updateRequest);
 }

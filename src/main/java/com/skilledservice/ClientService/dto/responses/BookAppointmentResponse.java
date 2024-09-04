@@ -1,5 +1,7 @@
 package com.skilledservice.ClientService.dto.responses;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.skilledservice.ClientService.data.constants.AppointmentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BookAppointmentResponse {
-
-    private Long appointmentId;
+    @JsonProperty("appointment_Id")
+    private Long Id;
     private BigDecimal amount;
-    private LocalDateTime startTime;
+    private LocalDateTime scheduleTime;
+    private AppointmentStatus status;
     private String message;
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class BookAppointmentRequest {
 
     private Long clientId;
-    private Client skilledWorker;
+    private Long skilledWorkerId;
     private AppointmentStatus status;
     private LocalDateTime scheduleTime;
     private Category category;

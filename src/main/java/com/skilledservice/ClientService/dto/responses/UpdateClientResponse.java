@@ -6,12 +6,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UpdateClientResponse {
-    private String clientId;
-    private String firstName;
-    private String lastName;
+    private Long clientId;
     private String username;
-    private String email;
     private String phone;
-    private String address;
     private String password;
+    private String houseNumber;
+    private String street;
+    private String area;
 }

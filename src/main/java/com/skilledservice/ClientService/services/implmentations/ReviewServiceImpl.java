@@ -5,9 +5,12 @@ import com.skilledservice.ClientService.dto.responses.PostReviewResponse;
 import com.skilledservice.ClientService.data.models.Review;
 import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.data.repository.ReviewRepository;
+import com.skilledservice.ClientService.exceptions.SabiConnectException;
 import com.skilledservice.ClientService.services.ServiceUtils.ReviewService;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -23,12 +26,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public PostReviewResponse addReview(PostReviewRequest postReview) {
-        Review review = new Review();
 
-        review.setSkilledWorker(postReview.getSkilledWorker());
+        Review review = new Review();
         SkilledWorker skilledWorker = skilledWorkerService.findById(postReview.getSkilledWorker().getId());
-        review.setReview(postReview.getReview());
+        if (skilledWorker == null) throw new SabiConnectException("skilled worker not found");
         review.setSkilledWorker(skilledWorker);
+        review.setReview(postReview.getReview());
+        review.setReviewDate(LocalDateTime.now());
 
         review = reviewRepository.save(review);
 

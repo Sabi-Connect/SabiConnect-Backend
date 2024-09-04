@@ -11,7 +11,7 @@ public class AppConfig {
     @Value("${paystack.verify.payment.url}")
     private String payStackVerifyPaymentUrl;
     @Value("${paystack.initiate.payment}")
-    private String payStackInitiatePayment;
+    private String payStackInitiatePaymentUrl;
 
     public String getPayStackSecretKey() {
         return payStackSecretKey;
@@ -21,7 +21,7 @@ public class AppConfig {
         return payStackVerifyPaymentUrl;
     }
 
-    public String getPayStackInitiatePayment() {
-        return payStackInitiatePayment;
+    public String getPayStackInitiatePaymentUrl() {
+        return payStackInitiatePaymentUrl;
     }
 }
