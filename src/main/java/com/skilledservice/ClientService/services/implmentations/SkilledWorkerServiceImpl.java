@@ -29,7 +29,6 @@ import java.util.Optional;
 public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     private final SkillService skillService;
-    private final PasswordEncoder passwordEncoder;
     private final SkilledWorkerRepository skilledWorkerRepository;
     private final AddressServiceImpl addressService;
     private final AppointmentService appointmentService;
@@ -38,9 +37,8 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
     @Autowired
     @Lazy
-    public SkilledWorkerServiceImpl(SkillService skillService, PasswordEncoder passwordEncoder, SkilledWorkerRepository skilledWorkerRepository, AddressServiceImpl addressService, AppointmentService appointmentService, SkillRepository skillRepository, AddressRepository addressRepository) {
+    public SkilledWorkerServiceImpl(SkillService skillService, SkilledWorkerRepository skilledWorkerRepository, AddressServiceImpl addressService, AppointmentService appointmentService, SkillRepository skillRepository, AddressRepository addressRepository) {
         this.skillService = skillService;
-        this.passwordEncoder = passwordEncoder;
         this.skilledWorkerRepository = skilledWorkerRepository;
         this.addressService = addressService;
         this.appointmentService = appointmentService;
@@ -61,7 +59,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         SkilledWorker skilledWorker = new SkilledWorker();
         skilledWorker.setFullName(registrationRequest.getFullName());
         skilledWorker.setEmail(registrationRequest.getEmail());
-        skilledWorker.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        skilledWorker.setPassword(registrationRequest.getPassword());
         skilledWorker = skilledWorkerRepository.save(skilledWorker);
 
         return getSkilledWorkerRegistrationResponse(skilledWorker);
@@ -70,9 +68,6 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     private static SkilledWorkerRegistrationResponse getSkilledWorkerRegistrationResponse(SkilledWorker skilledWorker) {
         SkilledWorkerRegistrationResponse registrationResponse = new SkilledWorkerRegistrationResponse();
         registrationResponse.setSkilledWorkerId(skilledWorker.getId());
-        registrationResponse.setFullName(skilledWorker.getFullName());
-        registrationResponse.setEmail(skilledWorker.getEmail());
-        registrationResponse.setPassword(skilledWorker.getPassword());
         registrationResponse.setMessage("registration successful");
         return registrationResponse;
     }
@@ -121,6 +116,31 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         return checkLoginDetail(email, password);
     }
 
+
+    private LoginResponse checkLoginDetail(String email, String password) {
+        Optional<SkilledWorker> foundSkilledWorker = skilledWorkerRepository.findByEmail(email);
+        if (foundSkilledWorker.isPresent()){
+            SkilledWorker skilledWorker = foundSkilledWorker.get();
+            if (skilledWorker.getPassword().equals(password)) {
+                return loginResponseMapper(skilledWorker);
+            } else {
+                throw new SabiConnectException("Invalid username or password");
+            }
+        } else {
+            throw new SabiConnectException("Invalid username or password");
+        }
+    }
+
+    private LoginResponse loginResponseMapper(SkilledWorker skilledWorker) {
+        LoginResponse loginResponse = new LoginResponse();
+        String accessToken = JwtUtils.generateAccessToken(skilledWorker.getId());
+        BeanUtils.copyProperties(skilledWorker, loginResponse);
+        loginResponse.setJwtToken(accessToken);
+        loginResponse.setMessage("Login Successful");
+
+        return loginResponse;
+    }
+
     @Override
     public UpdateSkilledWorkerResponse updateSkilledWorkerProfile(UpdateSkilledWorkerRequest request) {
 
@@ -157,30 +177,6 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         response.setStreet(request.getStreet());
         response.setArea(request.getArea());
         return response;
-    }
-
-    private LoginResponse checkLoginDetail(String email, String password) {
-        Optional<SkilledWorker> foundSkilledWorker = skilledWorkerRepository.findByEmail(email);
-        if (foundSkilledWorker.isPresent()){
-            SkilledWorker skilledWorker = foundSkilledWorker.get();
-            if (skilledWorker.getPassword().equals(password)) {
-                return loginResponseMapper(skilledWorker);
-            } else {
-                throw new SabiConnectException("Invalid username or password");
-            }
-        } else {
-            throw new SabiConnectException("Invalid username or password");
-        }
-    }
-
-    private LoginResponse loginResponseMapper(SkilledWorker skilledWorker) {
-        LoginResponse loginResponse = new LoginResponse();
-        String accessToken = JwtUtils.generateAccessToken(skilledWorker.getId());
-        BeanUtils.copyProperties(skilledWorker, loginResponse);
-        loginResponse.setJwtToken(accessToken);
-        loginResponse.setMessage("Login Successful");
-
-        return loginResponse;
     }
 
 
