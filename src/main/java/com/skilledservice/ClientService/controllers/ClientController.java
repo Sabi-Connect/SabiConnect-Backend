@@ -58,6 +58,8 @@ public class ClientController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        System.out.println(loginRequest.getEmail()+"😊😊😊😊😊😊😊😊😊");
+        System.out.println(loginRequest.getPassword()+"😊😊😊😊😊😊😊😊😊");
         return ResponseEntity.status(CREATED)
                 .body(new ApiResponse(clientService.login(loginRequest),true));
     }

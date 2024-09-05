@@ -174,20 +174,26 @@ public class ClientServiceImpl implements ClientService {
     public LoginResponse login(LoginRequest loginRequest) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
+        System.out.println(email+"❤️❤️❤️❤️❤️❤️❤️❤️❤️");
+        System.out.println(password+"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀");
         return checkLoginDetail(email, password);
     }
 
     private LoginResponse checkLoginDetail(String email, String password) {
+        System.out.println(email+"😛😛😛😛😛😛😛😛😛😛😛😛");
+        System.out.println(password+"😛😛😛😛😛😛😛😛😛😛😛😛");
         Optional<Client> foundClient = clientRepository.findByEmail(email);
+
         if (foundClient.isPresent()){
             Client client = foundClient.get();
+            System.out.println(client.getPassword()+"🥳🥳🥳🥳🥳🥸🥸🥸🥸🥸🥸🥸🥸****************************************");
             if (client.getPassword().equals(password)) {
                 return loginResponseMapper(client);
             } else {
                 throw new SabiConnectException("Invalid username or password");
             }
         } else {
-            throw new SabiConnectException("Invalid username or password");
+            throw new SabiConnectException("user with the email "+email+" does not exist");
         }
     }
 

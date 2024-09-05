@@ -61,7 +61,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         skilledWorker.setLastName(registrationRequest.getLastName());
         skilledWorker.setEmail(registrationRequest.getEmail());
         skilledWorker.setPhoneNumber(registrationRequest.getPhoneNumber());
-        skilledWorker.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        skilledWorker.setPassword(registrationRequest.getPassword());
         skilledWorker.setUsername(registrationRequest.getUsername());
         Address newAddress = addressService.createAddress(registrationRequest);
         skilledWorker.setAddress(newAddress);

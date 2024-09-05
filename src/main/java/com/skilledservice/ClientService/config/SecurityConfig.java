@@ -31,15 +31,13 @@ package com.skilledservice.ClientService.config;
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //        source.registerCorsConfiguration("/", configuration);
 //        return source;
-//    }
-
-
-//}
 
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -63,10 +61,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/v1/client/**").permitAll() // Allow public access to these endpoints
+                        .requestMatchers("/api/v1/skilledWorker/**").permitAll() // Allow public access to these endpoints
                         .anyRequest().authenticated() // Secure other endpoints
                 );
         return http.build();
     }
+
+
 
 //
 //    @Bean
