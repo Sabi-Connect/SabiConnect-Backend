@@ -16,22 +16,22 @@ insert into address(id, area, house_number, street)values
 
 
 
-INSERT INTO skilled_workers (address_id, id, first_name, last_name, password, phone_number, time_updated, email, username)
+INSERT INTO skilled_workers (address_id, id, full_name, password, phone_number, time_updated, email, username)
 VALUES
-    (101, 201, 'John', 'Doe', 'password123', '123-456-7890', NOW(), 'john.doe@example.com', 'JohnDoe'),
-    (102, 202, 'Jane', 'Smith', 'password456', '098-765-4321', NOW(), 'jane.smith@example.com', 'JaneSmith'),
-    (103, 203, 'Alice', 'Johnson', 'password789', '555-555-5555', NOW(), 'alice.johnson@example.com', 'AliceJohnson'),
-    (104, 204, 'Bob', 'Brown', 'password321', '444-444-4444', NOW(), 'bob.brown@example.com', 'BobBrown');
+    (101, 201, 'John Doe', 'password123', '123-456-7890', NOW(), 'john.doe@example.com', 'JohnDoe'),
+    (102, 202, 'Jane Smith', 'password456', '098-765-4321', NOW(), 'jane.smith@example.com', 'JaneSmith'),
+    (103, 203, 'Alice Johnson', 'password789', '555-555-5555', NOW(), 'alice.johnson@example.com', 'AliceJohnson'),
+    (104, 204, 'Bob Brown', 'password321', '444-444-4444', NOW(), 'bob.brown@example.com', 'BobBrown');
 
 
 
 
-INSERT INTO clients (id, address_id, first_name, last_name, password, phone_number, time_updated, email)
+INSERT INTO clients (id, address_id, full_name, password, phone_number, time_updated, email)
 VALUES
-    (301, 101, 'Michael', 'Scott', 'password123', '123-456-7890', NOW(), 'michael.scott@example.com'),
-    (302, 102, 'Pam', 'Beesly', 'password456', '098-765-4321', NOW(), 'pam.beesly@example.com'),
-    (303, 103, 'Jim', 'Halpert', 'password789', '555-555-5555', NOW(), 'jim.halpert@example.com'),
-    (304, 104, 'Dwight', 'Schrute', 'password321', '444-444-4444', NOW(), 'dwight.schrute@example.com');
+    (301, 101, 'Michael Scott', 'password123', '123-456-7890', NOW(), 'michael.scott@example.com'),
+    (302, 102, 'Pam Beesly', 'password456', '098-765-4321', NOW(), 'pam.beesly@example.com'),
+    (303, 103, 'Jim Halpert', 'password789', '555-555-5555', NOW(), 'jim.halpert@example.com'),
+    (304, 104, 'Dwight Schrute', 'password321', '444-444-4444', NOW(), 'dwight.schrute@example.com');
 
 
 

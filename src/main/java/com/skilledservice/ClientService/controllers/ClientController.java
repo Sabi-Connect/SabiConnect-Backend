@@ -4,8 +4,13 @@ import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.dto.responses.ApiResponse;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -15,7 +20,15 @@ import static org.springframework.http.HttpStatus.CREATED;
 @AllArgsConstructor
 public class ClientController {
 
+    private static final Logger log = LoggerFactory.getLogger(ClientController.class);
     private final ClientService clientService;
+
+//    @PostMapping("/nothing")
+//    public ResponseEntity<?> callNothing() {
+//        Map<String,String> everything = new HashMap<>();
+//        everything.put("message", "Everything is Okay");
+//        return new ResponseEntity<>(everything, CREATED);
+//    }
 
     @PostMapping("/bookAppointment")
     public ResponseEntity<?>bookAppointment(@RequestBody BookAppointmentRequest bookAppointmentRequest){
@@ -26,6 +39,7 @@ public class ClientController {
 
     @PostMapping("/registerClient")
     public ResponseEntity<?> registerClient(@RequestBody RegistrationRequest registrationRequest){
+//        log.info("Registering Client => {}", registrationRequest.toString());
         return ResponseEntity.status(CREATED)
                .body(new ApiResponse
                         (clientService.registerClient(registrationRequest),true));
@@ -58,15 +72,8 @@ public class ClientController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-        System.out.println(loginRequest.getEmail()+"😊😊😊😊😊😊😊😊😊");
-        System.out.println(loginRequest.getPassword()+"😊😊😊😊😊😊😊😊😊");
         return ResponseEntity.status(CREATED)
                 .body(new ApiResponse(clientService.login(loginRequest),true));
     }
-
-
-
-
-
-
+    
 }

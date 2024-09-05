@@ -26,8 +26,8 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String fullName;
+//    private String lastName;
     @Column(unique = true)
     private String username;
     private String password;
@@ -43,8 +43,6 @@ public class Client {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
     @OneToMany(mappedBy = "client",
         cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Appointment> appointment;

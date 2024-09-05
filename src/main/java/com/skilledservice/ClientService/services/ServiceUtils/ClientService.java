@@ -26,4 +26,6 @@ public interface ClientService {
     Long getNumberOfUsers();
 
     LoginResponse login(LoginRequest loginRequest);
+
+    UpdateClientResponse updateClientProfile(UpdateClientRequest updateRequest);
 }
