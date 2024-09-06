@@ -37,7 +37,7 @@ public class SkilledWorkerController {
     public ResponseEntity<?> findById(@RequestParam Long skilledWorkerId) {
         return ResponseEntity.ok(skilledWorkerService.findById(skilledWorkerId));
     }
-    @PutMapping("/updateProfile")
+    @PutMapping("/updateSkilledWorkerProfile")
     public ResponseEntity<?> updateSkilledWorkerProfile(@RequestBody UpdateSkilledWorkerRequest request) {
         return ResponseEntity
                 .ok(new ApiResponse(skilledWorkerService.updateSkilledWorkerProfile(request), true));

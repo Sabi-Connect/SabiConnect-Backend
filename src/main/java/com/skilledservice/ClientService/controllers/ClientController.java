@@ -70,6 +70,13 @@ public class ClientController {
                .body(new ApiResponse
                         (clientService.viewAllAppointment(clientId),true));
     }
+
+    @PutMapping("/updateClientProfile")
+    public ResponseEntity<?> updateClientProfile(@RequestBody UpdateClientRequest request) {
+        return ResponseEntity
+                .ok(new ApiResponse(clientService.updateClientProfile(request), true));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         return ResponseEntity.status(CREATED)
