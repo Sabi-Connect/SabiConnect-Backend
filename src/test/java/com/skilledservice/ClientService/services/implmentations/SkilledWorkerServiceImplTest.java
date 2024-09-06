@@ -27,11 +27,6 @@ class SkilledWorkerServiceImplTest {
         RegistrationRequest request = new RegistrationRequest();
         request.setEmail("olodo1@gmail.com");
         request.setPassword("olodoolodo1");
-        request.setArea("olodo");
-        request.setFirstName("olodo");
-        request.setLastName("olodo");
-        request.setPhoneNumber("09185938231");
-        request.setHouseNumber("1920");
         skilledWorkerService.registerSkilledWorker(request);
 
         SkilledWorker found = skilledWorkerRepository.findByEmail("olodo@gmail.com").orElseThrow();
