@@ -29,7 +29,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
     private final SkilledWorkerService skilledWorkerService;
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
@@ -49,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
         Client user = new Client();
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
         user = clientRepository.save(user);
 
         ClientRegistrationResponse response = new ClientRegistrationResponse();
