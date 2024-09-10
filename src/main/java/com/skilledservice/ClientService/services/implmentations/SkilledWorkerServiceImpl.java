@@ -61,7 +61,6 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         skilledWorker.setEmail(registrationRequest.getEmail());
         skilledWorker.setPassword(registrationRequest.getPassword());
         skilledWorker = skilledWorkerRepository.save(skilledWorker);
-
         return getSkilledWorkerRegistrationResponse(skilledWorker);
     }
 

@@ -57,12 +57,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(withDefaults()) // Enable CORS with default settings
-                .csrf(csrf -> csrf.disable()) // Disable CSRF
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/client/**").permitAll() // Allow public access to these endpoints
-                        .requestMatchers("/api/v1/skilledWorker/**").permitAll() // Allow public access to these endpoints
-                        .anyRequest().authenticated() // Secure other endpoints
+                        .requestMatchers("/api/v1/client/**").permitAll()
+                        .requestMatchers("/api/v1/skilledWorker/**").permitAll()
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }
