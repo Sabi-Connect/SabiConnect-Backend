@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.controllers;
 
+import com.skilledservice.ClientService.data.models.SkilledWorker;
 import com.skilledservice.ClientService.dto.requests.AddSkillRequest;
 import com.skilledservice.ClientService.dto.requests.LoginRequest;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
@@ -9,6 +10,8 @@ import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerServi
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -47,5 +50,14 @@ public class SkilledWorkerController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.status(CREATED)
                 .body(new ApiResponse(skilledWorkerService.login(loginRequest), true));
+    }
+
+    @GetMapping("/nearby")
+    public List<SkilledWorker> getWorkersNearby(
+            @RequestParam double lat,
+            @RequestParam double lon,
+            @RequestParam(defaultValue = "10") double radius
+    ) {
+        return skilledWorkerService.findWorkersNear(lat, lon, radius);
     }
 }

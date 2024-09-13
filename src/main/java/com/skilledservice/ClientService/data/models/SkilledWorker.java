@@ -57,6 +57,9 @@ public class SkilledWorker {
         this.timeUpdated= now();
     }
 
+    private double latitude;
+    private double longitude;
+
 }
 
 
