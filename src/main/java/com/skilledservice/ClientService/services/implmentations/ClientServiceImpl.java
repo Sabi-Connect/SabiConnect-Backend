@@ -171,6 +171,7 @@ public class ClientServiceImpl implements ClientService {
 
     private LoginResponse checkLoginDetail(String email, String password) {
         Optional<Client> foundClient = clientRepository.findByEmail(email);
+
         if (foundClient.isPresent()){
             Client client = foundClient.get();
             if (client.getPassword().equals(password)) {
@@ -179,7 +180,7 @@ public class ClientServiceImpl implements ClientService {
                 throw new SabiConnectException("Invalid username or password");
             }
         } else {
-            throw new SabiConnectException("Invalid username or password");
+            throw new SabiConnectException("user with the email "+email+" does not exist");
         }
     }
 

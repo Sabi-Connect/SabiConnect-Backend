@@ -1,27 +1,43 @@
 package com.skilledservice.ClientService.services;
 
 import com.skilledservice.ClientService.data.models.SkilledWorker;
+import com.skilledservice.ClientService.data.repository.SkilledWorkerRepository;
 import com.skilledservice.ClientService.dto.requests.RegistrationRequest;
 import com.skilledservice.ClientService.dto.requests.UpdateSkilledWorkerRequest;
 import com.skilledservice.ClientService.dto.responses.SkilledWorkerRegistrationResponse;
 import com.skilledservice.ClientService.data.repository.AddressRepository;
 import com.skilledservice.ClientService.dto.responses.UpdateSkilledWorkerResponse;
 import com.skilledservice.ClientService.services.ServiceUtils.SkilledWorkerService;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
-//@Sql(scripts = {"/db/data.sql"})
+@Sql(scripts = {"/db/data.sql"})
 public class SkilledWorkerServiceTest {
     @Autowired
     private SkilledWorkerService skilledWorkerService;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private SkilledWorkerRepository skilledWorkerRepository;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
 
     @Test
@@ -59,7 +75,23 @@ public class SkilledWorkerServiceTest {
         UpdateSkilledWorkerResponse response1 = skilledWorkerService.updateSkilledWorkerProfile(request);
         assertThat(response1).isNotNull();
         assertThat(response1.getSkilledWorkerId()).isEqualTo(response.getSkilledWorkerId());
-
+    }
+    @Test
+    public void testFindWorkersNear() {
+        double clientLat = 39.75621;
+        double clientLon = -104.99404;
+        double radius = 10.0;
+        List<SkilledWorker> result = skilledWorkerService.findWorkersNear(clientLat, clientLon, radius);
+        assertEquals(4, result.size());
+        result.forEach(worker -> System.out.println(worker.getFullName()));
+    }
+    @Test
+    public void testFindWorkersNear_NoWorkersInRange() {
+        double clientLat = 40.00000;
+        double clientLon = -105.00000;
+        double radius = 5.0;
+        List<SkilledWorker> result = skilledWorkerService.findWorkersNear(clientLat, clientLon, radius);
+        assertEquals(0, result.size());
     }
 
 }

@@ -1,4 +1,9 @@
 truncate table skilled_workers cascade;
+-- ALTER TABLE skilled_workers
+-- -- ADD COLUMN latitude DOUBLE PRECISION,
+-- -- ADD COLUMN longitude DOUBLE PRECISION;
+
+truncate table skilled_workers cascade;
 truncate table skills cascade;
 truncate table clients cascade;
 truncate table address cascade;
@@ -16,13 +21,31 @@ insert into address(id, area, house_number, street)values
 
 
 
-INSERT INTO skilled_workers (address_id, id, full_name, password, phone_number, time_updated, email, username)
-VALUES
-    (101, 201, 'John Doe', 'password123', '123-456-7890', NOW(), 'john.doe@example.com', 'JohnDoe'),
-    (102, 202, 'Jane Smith', 'password456', '098-765-4321', NOW(), 'jane.smith@example.com', 'JaneSmith'),
-    (103, 203, 'Alice Johnson', 'password789', '555-555-5555', NOW(), 'alice.johnson@example.com', 'AliceJohnson'),
-    (104, 204, 'Bob Brown', 'password321', '444-444-4444', NOW(), 'bob.brown@example.com', 'BobBrown');
+-- INSERT INTO skilled_workers (address_id, id, full_name, password, phone_number, time_updated, email, username)
+-- VALUES
+--     (101, 201, 'John Doe', 'password123', '123-456-7890', NOW(), 'john.doe@example.com', 'JohnDoe'),
+--     (102, 202, 'Jane Smith', 'password456', '098-765-4321', NOW(), 'jane.smith@example.com', 'JaneSmith'),
+--     (103, 203, 'Alice Johnson', 'password789', '555-555-5555', NOW(), 'alice.johnson@example.com', 'AliceJohnson'),
+--     (104, 204, 'Bob Brown', 'password321', '444-444-4444', NOW(), 'bob.brown@example.com', 'BobBrown');
 
+-- ALTER TABLE skilled_workers ADD COLUMN latitude DOUBLE;
+-- ALTER TABLE skilled_workers ADD COLUMN longitude DOUBLE;
+
+-- Example data including latitude and longitude
+-- INSERT INTO skilled_workers (address_id, id, full_name, password, phone_number, time_updated, email, username, latitude, longitude)
+-- VALUES
+--     (101, 201, 'John Doe', 'password123', '123-456-7890', NOW(), 'john.doe@example.com', 'JohnDoe', 39.75621, -104.99404),
+--     (102, 202, 'Jane Smith', 'password456', '098-765-4321', NOW(), 'jane.smith@example.com', 'JaneSmith', 39.75900, -104.98900),
+--     (103, 203, 'Alice Johnson', 'password789', '555-555-5555', NOW(), 'alice.johnson@example.com', 'AliceJohnson', 39.75200, -104.99500),
+--     (104, 204, 'Bob Brown', 'password321', '444-444-4444', NOW(), 'bob.brown@example.com', 'BobBrown', 39.76000, -104.99000);
+
+INSERT INTO skilled_workers (address_id, id, full_name, password, phone_number, time_updated, email, username, latitude, longitude)
+VALUES
+    (101, 201, 'John Doe', 'password123', '123-456-7890', '2024-09-13 12:34:56', 'john.doe@example.com', 'JohnDpe', 39.75621, -104.99404),
+    (102, 202, 'Jane Smith', 'password456', '123-456-7891', '2024-09-13 12:34:56', 'jane.smith@example.com', 'JaneSmith', 39.75900, -104.98900),
+    (103, 203, 'Alice Johnson', 'password789', '123-456-7892', '2024-09-13 12:34:56', 'alice.johnsoy@example.com', 'AliceJohnson', 39.75200, -104.99500),
+    (104, 204, 'Bob Brown', 'password321', '123-456-7893', '2024-09-13 12:34:56', 'bob.browh@example.com', 'BobBrown', 39.76000, -104.99000);
+-- Repeat the same timestamp for other rows if necessary
 
 
 
@@ -59,4 +82,5 @@ VALUES
     (102, 202, 'PLUMBING', 'Pipe Fitting'),
     (103, 203, 'CARPENTRY', 'Woodworking'),
     (104, 204, 'PHOTOGRAPHY', 'Event Photography');
+
 
