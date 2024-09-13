@@ -44,6 +44,62 @@
 #          push: true
 #          tags: meshackyaro/sabiconnect:latest
 
+#
+#name: Java CI with Maven
+#
+#on:
+#  push:
+#    branches: [ "development" ]
+#
+#jobs:
+#  build:
+#    name: Build and Push Docker Image
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK 18
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '18'
+#          distribution: 'temurin'
+#          cache: maven
+#      - name: Build with Maven
+#        run: mvn -B package --file pom.xml -DskipTests
+#
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@v5
+#        with:
+#          push: true
+#          tags: meshackyaro/sabiconnect:latest
+#
+#  deploy:
+#    name: Deploy to Server
+#    runs-on: ubuntu-latest
+#    needs: build
+#    if: github.ref == 'refs/heads/development'  # Only deploy from the development branch
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Deploy to Server
+#        uses: appleboy/ssh-action@v0.1.0
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          script: |
+#            docker pull meshackyaro/sabiconnect:latest
+#            docker stop my-container || true
+#            docker rm my-container || true
+#            docker run -d --name my-container -p 80:80 meshackyaro/sabiconnect:latest
 
 name: Java CI with Maven
 
@@ -64,6 +120,7 @@ jobs:
           java-version: '18'
           distribution: 'temurin'
           cache: maven
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipTests
 
@@ -80,23 +137,21 @@ jobs:
           tags: meshackyaro/sabiconnect:latest
 
   deploy:
-    name: Deploy to Server
+    name: Deploy Docker Container
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/development'  # Only deploy from the development branch
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@v0.1.0
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker pull meshackyaro/sabiconnect:latest
-            docker stop my-container || true
-            docker rm my-container || true
-            docker run -d --name my-container -p 80:80 meshackyaro/sabiconnect:latest
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Deploy Docker Container
+        run: |
+          docker pull meshackyaro/sabiconnect:latest
+          docker stop my-container || true
+          docker rm my-container || true
+          docker run -d --name my-container -p 80:80 meshackyaro/sabiconnect:latest
