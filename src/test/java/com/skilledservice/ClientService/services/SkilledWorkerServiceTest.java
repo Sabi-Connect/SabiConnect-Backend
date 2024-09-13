@@ -75,39 +75,23 @@ public class SkilledWorkerServiceTest {
         UpdateSkilledWorkerResponse response1 = skilledWorkerService.updateSkilledWorkerProfile(request);
         assertThat(response1).isNotNull();
         assertThat(response1.getSkilledWorkerId()).isEqualTo(response.getSkilledWorkerId());
-
     }
     @Test
     public void testFindWorkersNear() {
-        // Arrange
         double clientLat = 39.75621;
         double clientLon = -104.99404;
         double radius = 10.0;
-
-        // Act
         List<SkilledWorker> result = skilledWorkerService.findWorkersNear(clientLat, clientLon, radius);
-
-        // Assert
-        // Since we are using real data from the database, assert based on expected results
-        // Assuming your database has workers within 10 km radius of the given point
-        assertEquals(4, result.size()); // Adjust this based on your expected results
-
-        // Optional: Print out worker names for verification
+        assertEquals(4, result.size());
         result.forEach(worker -> System.out.println(worker.getFullName()));
     }
-
     @Test
     public void testFindWorkersNear_NoWorkersInRange() {
-        // Arrange
         double clientLat = 40.00000;
         double clientLon = -105.00000;
         double radius = 5.0;
-
-        // Act
         List<SkilledWorker> result = skilledWorkerService.findWorkersNear(clientLat, clientLon, radius);
-
-        // Assert
-        assertEquals(0, result.size()); // No workers should be within 5 km of this point
+        assertEquals(0, result.size());
     }
 
 }

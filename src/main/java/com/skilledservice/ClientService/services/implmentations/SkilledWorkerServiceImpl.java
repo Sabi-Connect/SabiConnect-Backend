@@ -182,17 +182,16 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
 
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // Radius of the Earth in km
+        final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c; // Distance in kilometers
+        return R * c;
     }
 
-    // Get workers within a specific radius
     public List<SkilledWorker> findWorkersNear(double lat, double lon, double radius) {
         List<SkilledWorker> allWorkers = skilledWorkerRepository.findAll();
         return allWorkers.stream()
@@ -200,24 +199,6 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
                 .collect(Collectors.toList());
     }
 
-//    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-//        final int R = 6371; // Radius of the Earth in km
-//        double latDistance = Math.toRadians(lat2 - lat1);
-//        double lonDistance = Math.toRadians(lon2 - lon1);
-//        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-//                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-//                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//        return R * c; // Distance in kilometers
-//    }
-//
-//    // Get workers within a specific radius (e.g., 10 km)
-//    public List<SkilledWorker> findWorkersNear(double lat, double lon, double radius) {
-//        List<SkilledWorker> allWorkers = skilledWorkerRepository.findAll();
-//        return allWorkers.stream()
-//                .filter(worker -> calculateDistance(lat, lon, worker.getLatitude(), worker.getLongitude()) <= radius)
-//                .collect(Collectors.toList());
-//    }
 
 }
 
