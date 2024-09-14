@@ -137,6 +137,7 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
         String accessToken = JwtUtils.generateAccessToken(skilledWorker.getId());
         BeanUtils.copyProperties(skilledWorker, loginResponse);
         loginResponse.setJwtToken(accessToken);
+        loginResponse.setUserId(skilledWorker.getId());
         loginResponse.setMessage("Login Successful");
 
         return loginResponse;
