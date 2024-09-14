@@ -204,7 +204,7 @@ public class ClientServiceImpl implements ClientService {
             if (client.getPassword().equals(password)) {
                 return loginResponseMapper(client);
             } else {
-                throw new SabiConnectException("Invalid username or password");
+                throw new SabiConnectException("Invalid email or password");
             }
         } else {
             throw new SabiConnectException("user with the email "+email+" does not exist");
@@ -216,8 +216,8 @@ public class ClientServiceImpl implements ClientService {
         String accessToken = JwtUtils.generateAccessToken(client.getId());
         BeanUtils.copyProperties(client, loginResponse);
         loginResponse.setJwtToken(accessToken);
+        loginResponse.setUserId(client.getId());
         loginResponse.setMessage("Login Successful");
-
         return loginResponse;
     }
 

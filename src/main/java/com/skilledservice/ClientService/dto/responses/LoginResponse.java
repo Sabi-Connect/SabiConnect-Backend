@@ -8,5 +8,6 @@ import lombok.Setter;
 public class LoginResponse {
     private String jwtToken;
     private String message;
+    private Long userId;
 
 }
