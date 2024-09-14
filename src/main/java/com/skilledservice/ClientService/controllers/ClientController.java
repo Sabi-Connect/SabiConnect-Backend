@@ -23,13 +23,6 @@ public class ClientController {
     private static final Logger log = LoggerFactory.getLogger(ClientController.class);
     private final ClientService clientService;
 
-//    @PostMapping("/nothing")
-//    public ResponseEntity<?> callNothing() {
-//        Map<String,String> everything = new HashMap<>();
-//        everything.put("message", "Everything is Okay");
-//        return new ResponseEntity<>(everything, CREATED);
-//    }
-
     @PostMapping("/bookAppointment")
     public ResponseEntity<?>bookAppointment(@RequestBody BookAppointmentRequest bookAppointmentRequest){
         return ResponseEntity.status(CREATED)

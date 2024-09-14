@@ -41,7 +41,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientRegistrationResponse registerClient(RegistrationRequest request) {
-
+        System.out.println("hello 😀😀👌");
         validateEmail(request.getEmail());
         validatePassword(request.getPassword());
 
@@ -66,11 +66,11 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // Validate and fetch the skilled worker by skilledWorkerId
-        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
-        if (skilledWorkerId == null) {
-            throw new IllegalArgumentException("Skilled worker ID must not be null");
-        }
-        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
+//        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
+//        if (skilledWorkerId == null) {
+//            throw new IllegalArgumentException("Skilled worker ID must not be null");
+//        }
+//        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
 
         // Book the appointment
         Appointment appointment = appointmentService.bookAppointment(bookAppointmentRequest);
@@ -79,8 +79,8 @@ public class ClientServiceImpl implements ClientService {
         appointment.setClient(client);
         client.getAppointment().add(appointment);
 
-        appointment.setSkilledWorker(skilledWorker);
-        skilledWorker.getAppointment().add(appointment);
+//        appointment.setSkilledWorker(skilledWorker);
+//        skilledWorker.getAppointment().add(appointment);
 
         // Save the appointment
         appointmentService.save(appointment);
@@ -214,6 +214,11 @@ public class ClientServiceImpl implements ClientService {
     private LoginResponse loginResponseMapper(Client client) {
         LoginResponse loginResponse = new LoginResponse();
         String accessToken = JwtUtils.generateAccessToken(client.getId());
+
+        System.out.println("Client ID in response: " + client.getId());
+        System.out.println("hello 😀😀👌");
+
+
         BeanUtils.copyProperties(client, loginResponse);
         loginResponse.setJwtToken(accessToken);
         loginResponse.setUserId(client.getId());
