@@ -63,25 +63,52 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
         Client client = clientRepository.findById(bookAppointmentRequest.getClientId())
-                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        Appointment appointment =
-                appointmentService.bookAppointment(bookAppointmentRequest);
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Validate and fetch the skilled worker by skilledWorkerId
+        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
+        if (skilledWorkerId == null) {
+            throw new IllegalArgumentException("Skilled worker ID must not be null");
+        }
+        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
+
+        // Book the appointment
+        Appointment appointment = appointmentService.bookAppointment(bookAppointmentRequest);
+
+        // Associate client and skilled worker with the appointment
         appointment.setClient(client);
         client.getAppointment().add(appointment);
-        appointmentService.save(appointment);
 
-        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
-        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
         appointment.setSkilledWorker(skilledWorker);
         skilledWorker.getAppointment().add(appointment);
+
+        // Save the appointment
         appointmentService.save(appointment);
 
+        // Create and return the response
         BookAppointmentResponse response =
                 modelMapper.map(appointment, BookAppointmentResponse.class);
         response.setMessage("Appointment booked successfully");
         return response;
-
-
+//        Client client = clientRepository.findById(bookAppointmentRequest.getClientId())
+//                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//
+//        Appointment appointment =
+//                appointmentService.bookAppointment(bookAppointmentRequest);
+//        appointment.setClient(client);
+//        client.getAppointment().add(appointment);
+//        appointmentService.save(appointment);
+//
+//        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
+//        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
+//        appointment.setSkilledWorker(skilledWorker);
+//        skilledWorker.getAppointment().add(appointment);
+//        appointmentService.save(appointment);
+//
+//        BookAppointmentResponse response =
+//                modelMapper.map(appointment, BookAppointmentResponse.class);
+//        response.setMessage("Appointment booked successfully");
+//        return response;
     }
 
     @Override
