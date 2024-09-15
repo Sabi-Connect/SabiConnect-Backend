@@ -1,48 +1,48 @@
-name: Java CI with Maven
-
-on:
-  push:
-    branches: [ "development" ]
-
-jobs:
-  test:
-    name: Buld image
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK 18
-        uses: actions/setup-java@v1
-        with:
-          java-version: 18
-      - name: Maven Package
-        run: mvn -B clean package -DskipTests
-
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 18
-        uses: actions/setup-java@v3
-        with:
-          java-version: '18'
-          distribution: 'temurin'
-          cache: maven
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -DskipTests
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: meshackyaro/sabiconnect:latest
+#name: Java CI with Maven
+#
+#on:
+#  push:
+#    branches: [ "development" ]
+#
+#jobs:
+#  test:
+#    name: Buld image
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: Set up JDK 18
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 18
+#      - name: Maven Package
+#        run: mvn -B clean package -DskipTests
+#
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK 18
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '18'
+#          distribution: 'temurin'
+#          cache: maven
+#      - name: Build with Maven
+#        run: mvn -B package --file pom.xml -DskipTests
+#
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Build and push
+#        uses: docker/build-push-action@v5
+#        with:
+#          push: true
+#          tags: meshackyaro/sabiconnect:latest
 
 #
 #name: Java CI with Maven
@@ -101,40 +101,48 @@ jobs:
 #            docker rm my-container || true
 #            docker run -d --name my-container -p 80:80 meshackyaro/sabiconnect:latest
 
-#name: Java CI with Maven
+#name: Deploy Dockerhub
 #
 #on:
 #  push:
-#    branches: [ "development" ]
+#    branches:
+#    - development
 #
 #jobs:
 #  build:
-#    name: Build and Push Docker Image
 #    runs-on: ubuntu-latest
 #
 #    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up JDK 18
-#        uses: actions/setup-java@v3
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v2
 #        with:
-#          java-version: '18'
+#          java-version: '17'
 #          distribution: 'temurin'
 #          cache: maven
 #
-#      - name: Build with Maven
-#        run: mvn -B package --file pom.xml -DskipTests
+#      - name: Restore Maven Package
+#        uses: actions/cache@v2
+#        with:
+#          path: ~/.m2/repository
+#          key: ${{ runner.os }}-maven-${{ hashFiles('/*.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-maven-
+#
 #
 #      - name: Login to Docker Hub
-#        uses: docker/login-action@v3
+#        uses: docker/login-action@v2
 #        with:
 #          username: ${{ secrets.DOCKERHUB_USERNAME }}
 #          password: ${{ secrets.DOCKERHUB_TOKEN }}
 #
-#      - name: Build and push Docker image
-#        uses: docker/build-push-action@v5
-#        with:
-#          push: true
-#          tags: meshackyaro/sabiconnect:latest
+#      - name: Build Docker image
+#        run: docker build -t meshackyaro/sabiconnect:latest .
+#      - name: Push Docker image to Docker Hub
+#        run: docker push meshackyaro/sabiconnect:latest
+#
 #
 #  deploy:
 #    name: Deploy Docker Container
@@ -155,3 +163,67 @@ jobs:
 #          docker stop my-container || true
 #          docker rm my-container || true
 #          docker run -d --name my-container -p 80:80 meshackyaro/sabiconnect:latest
+
+
+
+name: Deploy Dockerhub
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Restore Maven Package
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('/*.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t meshackyaro/sabiconnect:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: docker push meshackyaro/sabiconnect:latest
+
+  deploy:
+    name: Deploy Docker Container
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/development'  # Only deploy from the development branch
+
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Deploy Docker Container
+        run: |
+          docker pull meshackyaro/sabiconnect:latest
+          docker stop my-container || true
+          docker rm my-container || true
+          docker run -d --name my-container -p 80:80 meshackyaro/sabiconnect:latest
