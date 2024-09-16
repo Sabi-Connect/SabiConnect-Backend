@@ -18,5 +18,4 @@ public class ViewAllAppointmentsResponse {
     private LocalDateTime scheduleTime;
     private Category category;
 //    private BigDecimal amount;
-
 }
