@@ -4,5 +4,4 @@ RUN mvn -B clean package -DskipTests
 
 FROM openjdk:17
 COPY --from=build ./target/*.jar app.jar
-#ENTRYPOINT ["java", "-jar", "app.jar"]
-ENTRYPOINT ["java", "-jar", "-Dserver.port=8080", "sabiconnect.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
