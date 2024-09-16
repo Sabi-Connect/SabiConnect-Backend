@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.skilledservice.ClientService.data.constants.AppointmentStatus;
+import com.skilledservice.ClientService.data.constants.Category;
 import com.skilledservice.ClientService.data.constants.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,5 +35,6 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "clients_id")
     private Client client;
+    private Category category;
 
 }
