@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BookAppointmentResponse {
-    @JsonProperty("appointment_Id")
-    private Long Id;
-    private BigDecimal amount;
-    private LocalDateTime scheduleTime;
+//    @JsonProperty("appointment_Id")
+//    private Long Id;
+//    private BigDecimal amount;
+//    private LocalDateTime scheduleTime;
     private AppointmentStatus status;
     private String message;
 }
