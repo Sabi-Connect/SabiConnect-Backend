@@ -158,9 +158,18 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id)
                 .orElseThrow(()->new UserNotFoundException("User not found"));
         List<Appointment> appointments = client.getAppointment();
+//        return appointments.stream()
+//                .map(appointment -> modelMapper
+//                        .map(appointment, ViewAllAppointmentsResponse.class)).toList();
         return appointments.stream()
-                .map(appointment -> modelMapper
-                        .map(appointment, ViewAllAppointmentsResponse.class)).toList();
+                .map(appointment -> {
+                    ViewAllAppointmentsResponse response = new ViewAllAppointmentsResponse();
+                    response.setId(appointment.getId());
+                    response.setScheduleTime(appointment.getScheduleTime()); // Ensure this is set correctly
+                    response.setCategory(appointment.getCategory()); // Ensure this is set correctly
+                    return response;
+                }).toList();
+
     }
     private void validateEmail(String email) {
         if (!email.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
