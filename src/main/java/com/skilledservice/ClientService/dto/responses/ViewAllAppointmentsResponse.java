@@ -17,6 +17,6 @@ public class ViewAllAppointmentsResponse {
     @JsonFormat(pattern = "dd-MMMM-yyyy 'at' hh:mm a")
     private LocalDateTime scheduleTime;
     private Category category;
-    private BigDecimal amount;
+//    private BigDecimal amount;
 
 }
