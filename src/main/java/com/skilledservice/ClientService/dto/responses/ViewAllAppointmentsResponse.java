@@ -12,10 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class ViewAllAppointmentsResponse {
-    @JsonProperty("appointments_id")
-    Long Id;
     @JsonFormat(pattern = "dd-MMMM-yyyy 'at' hh:mm a")
     private LocalDateTime scheduleTime;
     private Category category;
-//    private BigDecimal amount;
 }
