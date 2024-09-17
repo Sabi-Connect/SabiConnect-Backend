@@ -22,8 +22,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -62,53 +64,30 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public BookAppointmentResponse bookAppointment(BookAppointmentRequest bookAppointmentRequest) {
-        Client client = clientRepository.findById(bookAppointmentRequest.getClientId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        // Validate and fetch the skilled worker by skilledWorkerId
-//        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
-//        if (skilledWorkerId == null) {
-//            throw new IllegalArgumentException("Skilled worker ID must not be null");
-//        }
-//        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
-
-        // Book the appointment
-        Appointment appointment = appointmentService.bookAppointment(bookAppointmentRequest);
-
-        // Associate client and skilled worker with the appointment
-        appointment.setClient(client);
-        client.getAppointment().add(appointment);
-
-//        appointment.setSkilledWorker(skilledWorker);
-//        skilledWorker.getAppointment().add(appointment);
-
-        // Save the appointment
-        appointmentService.save(appointment);
-
-        // Create and return the response
-        BookAppointmentResponse response =
-                modelMapper.map(appointment, BookAppointmentResponse.class);
-        response.setMessage("Appointment booked successfully");
-        return response;
 //        Client client = clientRepository.findById(bookAppointmentRequest.getClientId())
-//                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 //
-//        Appointment appointment =
-//                appointmentService.bookAppointment(bookAppointmentRequest);
+//        Appointment appointment = appointmentService.bookAppointment(bookAppointmentRequest);
 //        appointment.setClient(client);
 //        client.getAppointment().add(appointment);
 //        appointmentService.save(appointment);
-//
-//        Long skilledWorkerId = bookAppointmentRequest.getSkilledWorkerId();
-//        SkilledWorker skilledWorker = skilledWorkerService.findById(skilledWorkerId);
-//        appointment.setSkilledWorker(skilledWorker);
-//        skilledWorker.getAppointment().add(appointment);
-//        appointmentService.save(appointment);
-//
 //        BookAppointmentResponse response =
 //                modelMapper.map(appointment, BookAppointmentResponse.class);
 //        response.setMessage("Appointment booked successfully");
 //        return response;
+        Client client = clientRepository.findById(bookAppointmentRequest.getClientId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Appointment appointment = appointmentService.bookAppointment(bookAppointmentRequest);
+        appointment.setClient(client);
+        client.getAppointment().add(appointment);
+        appointmentService.save(appointment);
+        BookAppointmentResponse response = new BookAppointmentResponse();
+        response.setScheduleTime(appointment.getScheduleTime());
+        response.setStatus(appointment.getStatus());
+        response.setMessage("Appointment booked successfully");
+
+        return response;
+
     }
 
     @Override
@@ -152,24 +131,24 @@ public class ClientServiceImpl implements ClientService {
          response.setMessage("Appointment  deleted successfully");
          return response;
     }
-
     @Override
-    public List<ViewAllAppointmentsResponse> viewAllAppointment(Long id) {
+    public ViewAllAppointmentsResponse viewAllAppointment(Long id) {
         Client client = clientRepository.findById(id)
-                .orElseThrow(()->new UserNotFoundException("User not found"));
-        List<Appointment> appointments = client.getAppointment();
-//        return appointments.stream()
-//                .map(appointment -> modelMapper
-//                        .map(appointment, ViewAllAppointmentsResponse.class)).toList();
-        return appointments.stream()
-                .map(appointment -> {
-                    ViewAllAppointmentsResponse response = new ViewAllAppointmentsResponse();
-                    response.setId(appointment.getId());
-                    response.setScheduleTime(appointment.getScheduleTime()); // Ensure this is set correctly
-                    response.setCategory(appointment.getCategory()); // Ensure this is set correctly
-                    return response;
-                }).toList();
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        List<Appointment> appointments = client.getAppointment();
+
+        if (appointments.isEmpty()) {
+            throw new IllegalArgumentException("No appointments found for this client");
+        }
+
+        Appointment appointment = appointments.get(0);
+
+        ViewAllAppointmentsResponse response = new ViewAllAppointmentsResponse();
+        response.setCategory(appointment.getCategory());
+        response.setScheduleTime(appointment.getScheduleTime());
+
+        return response;
     }
     private void validateEmail(String email) {
         if (!email.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {

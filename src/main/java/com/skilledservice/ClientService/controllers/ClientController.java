@@ -59,6 +59,7 @@ public class ClientController {
 
     @GetMapping("/viewAllAppointment")
     public ResponseEntity<?> viewAllAppointment(@RequestParam Long clientId){
+        System.out.println("Received clientId: " + clientId);
         return ResponseEntity.status(CREATED)
                .body(new ApiResponse
                         (clientService.viewAllAppointment(clientId),true));
