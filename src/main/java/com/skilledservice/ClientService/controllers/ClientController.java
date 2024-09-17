@@ -76,5 +76,11 @@ public class ClientController {
         return ResponseEntity.status(CREATED)
                 .body(new ApiResponse(clientService.login(loginRequest),true));
     }
-    
+
+    @RequestMapping(value = "/api/**", method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> handleOptions() {
+        return ResponseEntity.ok().build();
+    }
+
+
 }
