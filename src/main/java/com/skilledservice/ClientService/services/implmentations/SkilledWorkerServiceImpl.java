@@ -82,7 +82,10 @@ public class SkilledWorkerServiceImpl implements SkilledWorkerService {
     public SkilledWorker findById(Long skilledWorkerId) {
         return skilledWorkerRepository.findById(skilledWorkerId).orElseThrow(() -> new SabiConnectException("user not found"));
     }
-
+    @Override
+    public SkilledWorker findSkillByFullName(String skilledWorkerFullName) {
+        return skilledWorkerRepository.findSkillByFullName(skilledWorkerFullName).orElseThrow(() -> new SabiConnectException("user not found"));
+    }
     @Override
     public AcceptAppointmentResponse acceptAppointment(AcceptAppointmentRequest acceptAppointmentRequest) {
         SkilledWorker skilledWorker = skilledWorkerRepository.findById(acceptAppointmentRequest.getId())

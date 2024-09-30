@@ -14,6 +14,7 @@ public interface SkilledWorkerService {
     AddSkillResponse addSkill(AddSkillRequest addSkillRequest);
 
     SkilledWorker findById(Long skilledWorkerId);
+    SkilledWorker findSkillByFullName(String  skilledWorkerFullName);
 
     AcceptAppointmentResponse acceptAppointment(AcceptAppointmentRequest acceptAppointmentRequest);
 

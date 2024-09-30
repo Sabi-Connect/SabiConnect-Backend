@@ -40,6 +40,10 @@ public class SkilledWorkerController {
     public ResponseEntity<?> findById(@RequestParam Long skilledWorkerId) {
         return ResponseEntity.ok(skilledWorkerService.findById(skilledWorkerId));
     }
+    @GetMapping("/findByFullName")
+    public ResponseEntity<?> findSkillByFullName(@RequestParam String skilledWorkerFullName) {
+        return ResponseEntity.ok(skilledWorkerService.findSkillByFullName(skilledWorkerFullName));
+    }
     @PutMapping("/updateSkilledWorkerProfile")
     public ResponseEntity<?> updateSkilledWorkerProfile(@RequestBody UpdateSkilledWorkerRequest request) {
         return ResponseEntity
