@@ -47,8 +47,10 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill findSkillById(Long skillId) {
+
         return skillRepository.findSkillById(skillId);
     }
+
 
     @Override
     public Skill addASkill(Skill skill) {

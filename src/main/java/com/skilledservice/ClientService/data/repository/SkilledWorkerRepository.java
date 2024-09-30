@@ -10,6 +10,8 @@ public interface SkilledWorkerRepository extends JpaRepository<SkilledWorker, Lo
     Optional<SkilledWorker> findById(Long Id);
 
     Optional<SkilledWorker> findByEmail(String email);
+
+    Optional<SkilledWorker> findSkillByFullName(String skilledWorkerFullName);
 }
 
 
