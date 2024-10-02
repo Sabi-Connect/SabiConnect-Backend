@@ -25,6 +25,8 @@ public class ClientServiceApplication {
 						.allowedOrigins("*");
 			}
 		};
+
+
 	}
 
 
