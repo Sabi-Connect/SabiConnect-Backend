@@ -2,10 +2,13 @@ package com.skilledservice.ClientService.controllers;
 
 import com.skilledservice.ClientService.dto.requests.*;
 import com.skilledservice.ClientService.dto.responses.ApiResponse;
+import com.skilledservice.ClientService.dto.responses.ConsultationResponse;
 import com.skilledservice.ClientService.services.ServiceUtils.ClientService;
+import com.skilledservice.ClientService.services.ServiceUtils.ConsultationService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,7 @@ public class ClientController {
 
     private static final Logger log = LoggerFactory.getLogger(ClientController.class);
     private final ClientService clientService;
+    private final ConsultationService consultationService;
 
     @PostMapping("/bookAppointment")
     public ResponseEntity<?>bookAppointment(@RequestBody BookAppointmentRequest bookAppointmentRequest){
@@ -81,6 +85,13 @@ public class ClientController {
     public ResponseEntity<?> handleOptions() {
         return ResponseEntity.ok().build();
     }
-
+    @PostMapping("/consult")
+    public ResponseEntity<ConsultationResponse> bookConsultation(
+            @RequestParam Long clientId,
+            @RequestParam Long workerId,
+            @RequestParam String details) {
+        ConsultationResponse response = consultationService.bookConsultation(clientId, workerId, details);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
 }

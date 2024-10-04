@@ -69,4 +69,5 @@ public class ConsultationServiceTest {
             consultationService.scheduleAvailability(999L, LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         });
     }
+    
 }
