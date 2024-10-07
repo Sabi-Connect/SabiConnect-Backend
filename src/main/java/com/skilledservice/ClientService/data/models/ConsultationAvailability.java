@@ -16,10 +16,8 @@ public class ConsultationAvailability {
     @OneToOne
     @JoinColumn(name = "consultation_id")
     private Consultation consultation;
-
     @Column
     private LocalDateTime clientAvailability;
-
     @Column
     private LocalDateTime workerAvailability;
 }

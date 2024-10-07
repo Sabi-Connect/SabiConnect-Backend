@@ -1,5 +1,6 @@
 package com.skilledservice.ClientService.data.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -48,6 +49,11 @@ public class Client {
     private List<Appointment> appointment;
     @OneToOne
     private Address address;
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+//    @Setter(AccessLevel.NONE)
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+//    private LocalDateTime scheduleTime;
 
     @PrePersist
     private void setTimeCreated(){
@@ -57,5 +63,9 @@ public class Client {
     private void setTimeUpdated(){
         this.timeUpdated= now();
     }
+
+//    private void setScheduleTIme(){
+//        this.setScheduleTIme();
+//    }
 
 }

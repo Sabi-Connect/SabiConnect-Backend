@@ -88,22 +88,36 @@ public class ClientController {
     public ResponseEntity<?> handleOptions() {
         return ResponseEntity.ok().build();
     }
+
+//    @PostMapping("/consult")
+//    public ResponseEntity<ConsultationResponse> bookConsultation(@RequestBody ConsultationRequest request) {
+//        ConsultationResponse response = consultationService.bookConsultation(
+//                request.getSkilledWorkerFullName(),
+//                request.getClientId(),
+//                request.getScheduleTime(),
+//                request.getCategory());
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
     @PostMapping("/consult")
-    public ResponseEntity<ConsultationResponse> bookConsultation(
-            @RequestParam Long clientId,
-            @RequestParam Long workerId,
-            @RequestParam String details) {
-        ConsultationResponse response = consultationService.bookConsultation(clientId, workerId, details);
+    public ResponseEntity<ConsultationResponse> bookConsultation(@RequestBody ConsultationRequest request) {
+        ConsultationResponse response = consultationService.bookConsultation(
+                request.getSkilledWorkerFullName(),
+                request.getClientId(),
+                request.getScheduleTime(),
+                request.getCategory());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-    @PostMapping("/{consultationId}/availability")
-    public ResponseEntity<ConsultationAvailability> scheduleAvailability(
-            @PathVariable Long consultationId,
-            @RequestParam LocalDateTime clientAvailability,
-            @RequestParam LocalDateTime workerAvailability) {
-        ConsultationAvailability availability = consultationService.scheduleAvailability(
-                consultationId, clientAvailability, workerAvailability);
-        return new ResponseEntity<>(availability, HttpStatus.CREATED);
+
+    @PostMapping("/availability")
+    public ResponseEntity<Boolean> checkAvailability(@RequestBody AvailabilityRequest request) {
+        boolean isAvailable = consultationService.checkAvailability(request.getScheduleTime(), request.getCategory());
+        return new ResponseEntity<>(isAvailable, HttpStatus.OK);
+    }
+
+    @PostMapping("/status")
+    public ResponseEntity<String> updateBookingStatus(@PathVariable Long consultationId, @RequestParam String newStatus) {
+        consultationService.updateBookingStatus(consultationId, newStatus);
+        return new ResponseEntity<>("Booking status updated", HttpStatus.OK);
     }
 
 }
